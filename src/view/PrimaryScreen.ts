@@ -1,6 +1,5 @@
 import promptSync from "prompt-sync";
 
-
 import Router from "../Router";
 
 export default class PrimaryScreen {

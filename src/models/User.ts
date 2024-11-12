@@ -1,3 +1,10 @@
+export interface UserDependencies {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    typeUser: "desenvolvedor" | "empresa";
+}
 export default class User {
 
     private id!: number;
@@ -7,7 +14,7 @@ export default class User {
     private typeUser!: "desenvolvedor" | "empresa"
     private dateCreate!: Date;
 
-    public constructor(id: number, name: string, email: string, password: string, typeUser: "desenvolvedor" | "empresa") {
+    public constructor({ id, name, email, password, typeUser }: UserDependencies) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -52,6 +59,10 @@ export default class User {
     public validateEmail(): boolean {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(this.email);
+    }
+
+    public getUserInfo(): string {
+        return `ID: ${this.id}, Name: ${this.name}, Email: ${this.email}, Type: ${this.typeUser}, Date Created: ${this.dateCreate}`;
     }
 
     // Método da Classe de Alterar Senha do Usuário//
