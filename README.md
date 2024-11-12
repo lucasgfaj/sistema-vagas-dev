@@ -20,7 +20,7 @@ Cada pasta neste repositório representa um sistema independente. Dentro de cada
 Alguns dos sistemas que você encontrará neste repositório incluem:
 
 - **Sistema de Gerenciamento de Animais**: Exemplo de CRUD com gerenciamento de dados de animais.
-- **Sistema de Gerenciamento de Vagas**: Sistema de CRUD com gerenciamento de dados de vagas, usuários, linguagens e empresas.
+- **Sistema de Gerenciamento de Vagas para Desenvolvedores**: Sistema de CRUD com gerenciamento de dados de vagas, usuários, linguagens e empresas.
   
 Cada exemplo foi desenvolvido para abordar diferentes aspectos de POO e aplicar técnicas como:
 
