@@ -7,10 +7,15 @@ export default class Skills {
         this.level = level;
     }
 
-    getNome(): string {
+    getName(): string {
         return this.name;
     }
-    getNivel(): string {
+
+    setName(name: string): void{
+      this.name = name;
+    }
+    
+    getLevel(): string {
         return this.level;
     }
 
