@@ -8,7 +8,7 @@ export interface UserDependencies {
 export default class User {
 
     private id!: number;
-    private name!: string;
+    protected name!: string;
     private email!: string;
     private password!: string;
     private typeUser!: "desenvolvedor" | "empresa"

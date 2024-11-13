@@ -14,15 +14,14 @@ export default class Skills {
         return this.level;
     }
 
-
-//   // Define o nível da habilidade
-//   setNivel(novoNivel: string): void {
-//     const niveisValidos = ["iniciante", "intermediário", "avançado"];
-//     if (niveisValidos.includes(novoNivel)) {
-//       this.nivel = novoNivel;
-//       console.log(`Nível da habilidade "${this.nome}" atualizado para: ${novoNivel}`);
-//     } else {
-//       console.log("Nível inválido. Escolha entre: iniciante, intermediário ou avançado.");
-//     }
-//   }
+    // Define o nível da habilidade
+     setLevel(newLevel: string): void {
+     const validateLevel = ["Júnior", "Pleno", "Senior"];
+     if (validateLevel.includes(newLevel)) {
+      this.level = newLevel;
+       console.log(`Nível da habilidade "${this.name}" atualizado para: ${newLevel}`);
+     } else {
+       console.log("Nível inválido. Escolha entre: iniciante, intermediário ou avançado.");
+     }
+   }
 }
