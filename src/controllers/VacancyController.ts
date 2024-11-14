@@ -1,1 +1,1 @@
-export default class VagaController {}
+export default class VacancyController {}

@@ -1,3 +1,3 @@
-export default class DesenvolvedorController{
+export default class DeveloperController{
     
 }

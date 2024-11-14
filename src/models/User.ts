@@ -5,21 +5,22 @@ export interface UserDependencies {
     password: string;
     typeUser: "desenvolvedor" | "empresa";
 }
+
 export default class User {
 
     private id!: number;
     protected name!: string;
     private email!: string;
     private password!: string;
-    private typeUser!: "desenvolvedor" | "empresa"
+    private typeUser!: "desenvolvedor" | "empresa";
     private dateCreate!: Date;
 
-    public constructor({ id, name, email, password, typeUser }: UserDependencies) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.typeUser = typeUser;
+    public constructor(userDependencies: UserDependencies) {
+        this.id = userDependencies.id;
+        this.name = userDependencies.name;
+        this.email = userDependencies.email;
+        this.password = userDependencies.password;
+        this.typeUser = userDependencies.typeUser;
         this.dateCreate = new Date();
     }
 
