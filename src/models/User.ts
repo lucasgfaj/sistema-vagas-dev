@@ -1,17 +1,13 @@
-import { IUsers } from './packages/IUsers';
-export default class User implements IUsers {
-    public id: number;
-    public name: string;
-    public email: string;
-    public password: string;
-    public typeUser: "desenvolvedor" | "empresa";
+export default class User {
+    
+    public id!: number;
+    public name!: string;
+    public email!: string;
+    public password!: string;
+    public typeUser!: "desenvolvedor" | "empresa";
 
-    public constructor(userDependencies: IUsers) {
-        this.id = userDependencies.id;
-        this.name = userDependencies.name;
-        this.email = userDependencies.email;
-        this.password = userDependencies.password;
-        this.typeUser = userDependencies.typeUser;
+    public constructor() {
+        
     }
 
     public getID(): number {

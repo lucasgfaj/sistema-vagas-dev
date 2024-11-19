@@ -1,10 +1,13 @@
-import { IUsers } from './packages/IUsers';
 import User from "./User";
 
-export default class Enterprise extends User implements IUsers {
+export default class Enterprise extends User {
 
-    constructor(userController: IUsers){
-        super(userController);
+
+    jobCode!: number;
+    skillCode!: number;
+
+    constructor(){
+        super();
     }
 
 }
