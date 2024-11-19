@@ -1,5 +1,5 @@
 export default class User {
-    
+
     public id!: number;
     public name!: string;
     public email!: string;
@@ -7,7 +7,7 @@ export default class User {
     public typeUser!: "desenvolvedor" | "empresa";
 
     public constructor() {
-        
+0
     }
 
     public getID(): number {

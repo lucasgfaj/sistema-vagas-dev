@@ -1,13 +1,16 @@
 import promptSync from "prompt-sync";
 import Router from "../Router";
+import UserScreen from "./UserScreen";
 
 export default class PrimaryScreen {
 
     private prompt = promptSync();
     private router!: Router;
+    private userScreen!: UserScreen;
 
     constructor(router: Router) {
         this.router = router;
+        this.userScreen = new UserScreen(this.router);
     }
 
     public getFirstScreen(): void {
@@ -31,12 +34,14 @@ export default class PrimaryScreen {
                 case "1":
                     // Cadastrar Usuário
                     console.log("Cadastro iniciado...");
+                    this.userScreen.registerUser();
                     // Chame a função correspondente ao cadastro aqui
                     break;
 
                 case "2":
                     // Login Usuário
                     console.log("Login iniciado...");
+                    this.userScreen.loginUser();
                     // Chame a função correspondente ao login aqui
                     break;
 
