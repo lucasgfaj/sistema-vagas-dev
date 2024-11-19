@@ -1,49 +1,48 @@
-export interface UserDependencies {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    typeUser: "desenvolvedor" | "empresa";
-}
+import { IUsers } from './packages/IUsers';
+export default class User implements IUsers {
+    public id: number;
+    public name: string;
+    public email: string;
+    public password: string;
+    public typeUser: "desenvolvedor" | "empresa";
 
-export default class User {
-
-    private userDependencies: UserDependencies;
-
-    public constructor(userDependencies:UserDependencies) {
-        this.userDependencies = userDependencies;
+    public constructor(userDependencies: IUsers) {
+        this.id = userDependencies.id;
+        this.name = userDependencies.name;
+        this.email = userDependencies.email;
+        this.password = userDependencies.password;
+        this.typeUser = userDependencies.typeUser;
     }
 
     public getID(): number {
-        return this.userDependencies.id
+        return this.id;
     }
 
     public setID(id: number): void {
-        this.userDependencies.id = id
+        this.id = id;
     }
 
     public getName(): string {
-        return this.userDependencies.name;
+        return this.name;
     }
 
     public setName(name: string): void {
-        this.userDependencies.name = name
+        this.name = name;
     }
 
     public getEmail(): string {
-        return this.userDependencies.email;
+        return this.email;
     }
 
     public setEmail(email: string): void {
-        this.userDependencies.email = email
+        this.email = email;
     }
 
     public getPassword(): string {
-        return this.userDependencies.password;
+        return this.password;
     }
 
     public setPassword(password: string): void {
-        this.userDependencies.password = password
+        this.password = password;
     }
 }
-

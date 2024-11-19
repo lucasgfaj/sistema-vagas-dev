@@ -1,6 +1,8 @@
-import User, { UserDependencies } from "./User";
-export default class Developer extends User {
-    constructor(userController: UserDependencies){
+import { IUsers } from './packages/IUsers';
+import User from "./User";
+
+export default class Developer extends User implements IUsers {
+    constructor(userController: IUsers){
         super(userController);
     }
 
