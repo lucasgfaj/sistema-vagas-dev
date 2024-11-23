@@ -1,44 +1,45 @@
-<<<<<<< sistema-vagas-dev
-- sistema-vagas-dev
-=======
-# Sistemas em Programação Orientada a Objetos com TypeScript
+# Sistema de Vagas para Desenvolvedores 🚀
 
-Bem-vindo ao repositório de **Sistemas em Programação Orientada a Objetos (POO) usando TypeScript**. Este projeto reúne uma coleção de sistemas e exemplos práticos organizados em pastas separadas, aplicando conceitos fundamentais de POO, como classes, herança, encapsulamento, abstração e polimorfismo, com a tipagem e a segurança que TypeScript oferece.
+Bem-vindo ao repositório do **Sistema de Vagas para Desenvolvedores**, um projeto desenvolvido em **TypeScript** seguindo os princípios da **Programação Orientada a Objetos (POO)**. Este sistema oferece uma solução robusta para gerenciar vagas de trabalho voltadas para desenvolvedores, incluindo funcionalidades como cadastro de vagas, gerenciamento de candidatos e perfis de empresas.
+
+---
 
 ## 📜 Objetivo
 
-Este repositório foi criado para demonstrar e praticar a Programação Orientada a Objetos em TypeScript, com exemplos de sistemas completos que são úteis tanto para desenvolvedores iniciantes quanto avançados. Os exemplos aqui contidos exploram a criação de soluções escaláveis e organizadas para cenários reais, utilizando boas práticas de design orientado a objetos.
+Este projeto tem como objetivo demonstrar e praticar conceitos fundamentais de POO em TypeScript, utilizando boas práticas de design para criar uma solução eficiente e escalável. Ele é ideal para desenvolvedores que buscam aprimorar seus conhecimentos em TypeScript e design orientado a objetos.
 
-## 🗂️ Estrutura do Repositório
+---
 
-Cada pasta neste repositório representa um sistema independente. Dentro de cada pasta, você encontrará:
+## 🛠️ Funcionalidades
 
-- **Explicação do sistema**: Uma descrição do propósito e funcionalidades.
-- **Código-fonte em TypeScript**: Código desenvolvido seguindo os princípios de POO.
-- **README específico do sistema** (opcional): Explicação detalhada de como o sistema funciona e como usá-lo.
-- **Testes unitários** (quando aplicável): Scripts de teste para verificar o funcionamento do sistema.
-  
-### Exemplos de Sistemas
+- **📌 Cadastro de vagas**  
+  Gerencie vagas de trabalho com informações detalhadas, incluindo tecnologias e linguagens requeridas.  
 
-Alguns dos sistemas que você encontrará neste repositório incluem:
+- **🧑‍💻 Cadastro de desenvolvedores**  
+  Crie perfis de candidatos com habilidades específicas e preferências para vagas.  
 
-- **Sistema de Gerenciamento de Animais**: Exemplo de CRUD com gerenciamento de dados de animais.
-- **Sistema de Gerenciamento de Vagas para Desenvolvedores**: Sistema de CRUD com gerenciamento de dados de vagas, usuários, linguagens e empresas.
-  
-Cada exemplo foi desenvolvido para abordar diferentes aspectos de POO e aplicar técnicas como:
+- **🏢 Cadastro de empresas**  
+  Gerencie informações de empresas que oferecem vagas e associem-nas a candidatos e vagas.  
 
-- **Classes e Objetos**
-- **Herança e Composição**
-- **Encapsulamento e Abstração**
-- **Polimorfismo**
+- **🔗 Relacionamento entre vagas e candidatos**  
+  Vincule candidatos às vagas de forma eficiente com base em suas habilidades.  
+
+- **📊 Gerenciamento de tecnologias e linguagens**  
+  Organize e mantenha atualizadas as stacks utilizadas pelas empresas e desenvolvedores.  
+
+---
+
+## 🧑‍💻 Tecnologias Utilizadas
+
+- **TypeScript**: Linguagem principal para tipagem forte e segurança no código.  
+- **Node.js**: Ambiente de execução para rodar o projeto.  
+- **Jest** (ou similar): Framework para testes unitários e validação de funcionalidades.  
+
+---
 
 ## 🚀 Como Usar Este Repositório
 
-Para explorar ou testar qualquer um dos sistemas, siga estas etapas:
-
-1. **Clone o repositório** para o seu ambiente local:
+1. Clone o repositório:  
    ```bash
-   git clone https://github.com/lucasgfaj/ts-poo-systems.git
-
-   git checkout "nome-da-branch"
->>>>>>> main
+   git clone https://github.com/<seu-usuario>/sistema-vagas-dev.git
+   cd sistema-vagas-dev
