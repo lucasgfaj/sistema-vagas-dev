@@ -28,4 +28,8 @@ export default class Database {
     public findUserByEmail(email: string): User | undefined {
         return this.users.find((user) => user.getEmail() === email);
     }
+
+    public findUserById(id: number): User | undefined {
+        return this.users.find((user) => user.getID() === id);
+    }
 }

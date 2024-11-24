@@ -1,16 +1,13 @@
+// view/PrimaryScreen.ts
 import promptSync from "prompt-sync";
 import Router from "../Router";
-import UserScreen from "./UserScreen";
 
 export default class PrimaryScreen {
-
     private prompt = promptSync();
     private router!: Router;
-    private userScreen!: UserScreen;
 
     constructor(router: Router) {
         this.router = router;
-        this.userScreen = new UserScreen(this.router);
     }
 
     public getFirstScreen(): void {
@@ -32,27 +29,22 @@ export default class PrimaryScreen {
 
             switch (choice.trim()) {
                 case "1":
-                    // Cadastrar Usuário
-                    console.log("Cadastro iniciado...");
-                    this.userScreen.registerUser();
-                    // Chame a função correspondente ao cadastro aqui
+                    // Navegar para a tela de cadastro
+                    this.router.navigateToRegisterUser();
                     break;
 
                 case "2":
-                    // Login Usuário
-                    console.log("Login iniciado...");
-                    this.userScreen.loginUser();
-                    // Chame a função correspondente ao login aqui
+                    // Navegar para a tela de login
+                    this.router.navigateToLoginUser();
                     break;
 
                 case "3":
-                    // Listar Todos os Usuários
                     console.log("Recurso ainda não implementado, favor aguardar...");
                     break;
 
                 case "4":
                     console.log("Saindo...");
-                    showScreen = false; // Finaliza o loop
+                    showScreen = false;
                     break;
 
                 default:
