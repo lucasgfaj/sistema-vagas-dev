@@ -41,4 +41,13 @@ export default class User {
     public setPassword(password: string): void {
         this.password = password;
     }
+
+    public getTypeUser(): "desenvolvedor" | "empresa" {
+        return this.typeUser;
+    }
+
+    public setTypeUser(typeUser: "desenvolvedor" | "empresa"): void {
+        this.typeUser = typeUser;
+    }
+
 }

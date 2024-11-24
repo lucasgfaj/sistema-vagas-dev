@@ -32,4 +32,8 @@ export default class Database {
     public findUserById(id: number): User | undefined {
         return this.users.find((user) => user.getID() === id);
     }
+
+    public getUsersByType(type: string): User[] {
+        return this.users.filter(user => user.getTypeUser() === type);
+    }
 }

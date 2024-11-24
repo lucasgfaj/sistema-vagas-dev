@@ -1,6 +1,7 @@
 // view/PrimaryScreen.ts
 import promptSync from "prompt-sync";
 import Router from "../Router";
+import { get } from "http";
 
 export default class PrimaryScreen {
     private prompt = promptSync();
@@ -43,12 +44,12 @@ export default class PrimaryScreen {
                     break;
 
                 case "4":
-                    console.log("Saindo...");
                     showScreen = false;
                     break;
 
                 default:
                     console.log("Opção inválida. Por favor, tente novamente.");
+                    this.getFirstScreen();
             }
         }
     }

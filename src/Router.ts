@@ -1,20 +1,25 @@
 // Router.ts
-import DashbordScreen from "./view/DashbordScreen";
+import DashboardScreen from "./view/DashboardScreen";
 import PrimaryScreen from "./view/PrimaryScreen";
+import SkillsScreen from "./view/SkillsScreen";
 import UserScreen from "./view/UserScreen";
+import VacancyScreen from "./view/VacancyScreen";
 
 export default class Router {
-    navigateToDashboardScreen() {
-        throw new Error("Method not implemented.");
-    }
+      
     private primaryScreen: PrimaryScreen = new PrimaryScreen(this);
     private userScreen: UserScreen = new UserScreen(this);
-    private dashboardScreen: DashbordScreen = new DashbordScreen(this);
-
+    private dashboardScreen: DashboardScreen = new DashboardScreen(this);
+    private skillsScreen: SkillsScreen = new SkillsScreen(this);
+    private vacancyScreen: VacancyScreen = new VacancyScreen(this);
+        
     constructor() {
         this.primaryScreen = new PrimaryScreen(this);
         this.userScreen = new UserScreen(this);
-        this.dashboardScreen = new DashbordScreen(this);
+        this.dashboardScreen = new DashboardScreen(this);
+        this.skillsScreen = new SkillsScreen(this);
+        this.vacancyScreen = new VacancyScreen(this);
+        //PrimaryScreen
         this.navigateToPrimaryScreen();
     }
 
@@ -41,5 +46,20 @@ export default class Router {
     // Método para navegador para a tela de Dashboard Enterprise
     public navigateToDashboardEnterprise(): void {
         this.dashboardScreen.dashboardEnterprise();
+    }
+
+    // Método para navegador para a tela Skills Developer
+    public navigateToSkillsScreen(){
+        this.skillsScreen.skillsDeveloper();
+    }
+
+    // Método para navegador para a tela Vacancy Developer
+    public navigateToVacancyScreenDeveloper(){
+        this.vacancyScreen.vacancyDeveloper();
+    }
+
+    // Método para navegador para a tela Vacancy Enterprise
+    public navigateToVacancyScreenEnterprise(){
+        this.vacancyScreen.vacancyEnterprise();
     }
 }

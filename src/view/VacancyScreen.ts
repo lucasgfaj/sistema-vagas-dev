@@ -3,7 +3,7 @@ import Router from "../Router";
 import User from "../models/User";
 import Database from "../database/Database";
 
-export default class DashboardScreen {
+export default class VacancyScreen {
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
@@ -12,13 +12,13 @@ export default class DashboardScreen {
         this.router = router;
     }
 
-    public dashboardDeveloper(): void {
+    public vacancyDeveloper(): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log(`Bem-vindo(a), (Inserir Nome)`);
+        console.log(`Opções de Vagas - Developer (Inserir Nome):`);
         console.log("");
-        console.log("1 - Vagas");
-        console.log("2 - Habilidades");
-        console.log("3 - Sair");
+        console.log("1 - Buscar Vagas");
+        console.log("2 - Minhas Candidaturas");
+        console.log("3 - Voltar ao Dashboard");
         console.log("-------------------------------------------------------------------------------");
 
         const choice = this.prompt("Digite a opção desejada: ").trim();
@@ -31,34 +31,42 @@ export default class DashboardScreen {
               // Gerenciar as habilidades do usuário
                 break;
             case "3":
-                this.router.navigateToPrimaryScreen(); // Voltar para a tela principal
+                this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.dashboardDeveloper(); // Reexibir o menu
+                this.vacancyDeveloper(); // Reexibir o menu
         }
     }
 
-    public dashboardEnterprise(): void {
+    public vacancyEnterprise(): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log(`Bem-vindo(a), (Inserir Nome)`);
+        console.log(`Opções de Gerenciamento de Vagas - Empresa (Inserir Nome):`);
         console.log("");
-        console.log("1 - Gerenciar Vagas");
-        console.log("2 - Sair");
+        console.log("1 - Criar Vaga");
+        console.log("2 - Listar Minhas Vagas");
+        console.log("3 - Ver Candidatos de uma Vaga");
+        console.log("4 - Voltar ao Menu");
         console.log("-------------------------------------------------------------------------------");
 
         const choice = this.prompt("Digite a opção desejada: ").trim();
 
         switch (choice) {
             case "1":
-                // Método para gerenciar vagas
+                // Criar Vaga
                 break;
             case "2":
-                // Voltar para a tela principal
+                // Listar Minhas Vagas
+                break;
+            case "3":
+                // Ver Candidatos de uma Vaga
+                break;
+            case "4":
+                this.router.navigateToDashboardEnterprise();
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.router.navigateToDashboardEnterprise(); // Reexibir o menu
+                this.vacancyEnterprise(); // Reexibir o menu
         }
     }
 }

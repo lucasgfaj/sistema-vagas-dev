@@ -95,23 +95,31 @@ export default class UserScreen {
 
     public loginUser(): void {
         console.log("---- Login ----");
-        console.log("Digite 'b' a qualquer momento para voltar ao menu principal.");
+        console.log("Digite '4' a qualquer momento para voltar ao menu principal.");
 
         const email = this.prompt("Digite o email: ");
-        if (email.trim().toLowerCase() === "b") return;
+        if (email.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
 
         const password = this.prompt("Digite a senha: ");
-        if (password.trim().toLowerCase() === "b") return;
+        if (password.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
 
-        const user = this.db.findUserByEmail(email);
+        const userDatabase = this.db.findUserByEmail(email);
 
-        if (user && user.getPassword() === password) {
-            console.log(`Login bem-sucedido! Bem-vindo, ${user.getName()} (${user.typeUser}).`);
+        if (userDatabase && userDatabase.getPassword() === password) {
+            console.log(`Login bem-sucedido! Bem-vindo, ${userDatabase.getName()} (${userDatabase.getTypeUser()}).`);
+
+            // Verifica o tipo do usuário autenticado
+            if (userDatabase.getTypeUser() === "empresa") {
+                this.router.navigateToDashboardEnterprise(); // Redireciona para o dashboard da empresa
+            } else if (userDatabase.getTypeUser() === "desenvolvedor") {
+                this.router.navigateToDashboardDeveloper(); // Redireciona para o dashboard do desenvolvedor
+            } else {
+                console.log("Tipo de usuário inválido. Contate o suporte.");
+                this.router.navigateToPrimaryScreen();
+            }
         } else {
             console.log("Email ou senha inválidos. Tente novamente.");
+            this.router.navigateToPrimaryScreen();
         }
-
-        // Após o login, navegue para a tela inicial
-        this.router.navigateToPrimaryScreen();
     }
 }
