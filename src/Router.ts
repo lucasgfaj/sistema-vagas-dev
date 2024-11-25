@@ -38,6 +38,12 @@ export default class Router {
         this.userScreen.loginUser();
     }
 
+    // Método para navegar para ListAllUsers
+
+    public navigateToListAllUsers(): void {
+        this.userScreen.listAllUsers();
+    }
+
     // Método para navegador para a tela de Dashboard Developer
     public navigateToDashboardDeveloper(): void {
         this.dashboardScreen.dashboardDeveloper();
@@ -49,17 +55,17 @@ export default class Router {
     }
 
     // Método para navegador para a tela Skills Developer
-    public navigateToSkillsScreen(){
+    public navigateToSkillsScreen(): void{
         this.skillsScreen.skillsDeveloper();
     }
 
     // Método para navegador para a tela Vacancy Developer
-    public navigateToVacancyScreenDeveloper(){
+    public navigateToVacancyScreenDeveloper(): void{
         this.vacancyScreen.vacancyDeveloper();
     }
 
     // Método para navegador para a tela Vacancy Enterprise
-    public navigateToVacancyScreenEnterprise(){
+    public navigateToVacancyScreenEnterprise(): void{
         this.vacancyScreen.vacancyEnterprise();
     }
 }

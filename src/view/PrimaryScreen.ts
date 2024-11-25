@@ -1,7 +1,6 @@
 // view/PrimaryScreen.ts
 import promptSync from "prompt-sync";
 import Router from "../Router";
-import { get } from "http";
 
 export default class PrimaryScreen {
     private prompt = promptSync();
@@ -39,8 +38,8 @@ export default class PrimaryScreen {
                     this.router.navigateToLoginUser();
                     break;
 
-                case "3":
-                    console.log("Recurso ainda não implementado, favor aguardar...");
+                case "3":   
+                    this.router.navigateToListAllUsers();
                     break;
 
                 case "4":

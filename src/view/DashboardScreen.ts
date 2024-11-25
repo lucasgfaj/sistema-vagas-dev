@@ -1,6 +1,5 @@
 import promptSync from "prompt-sync";
 import Router from "../Router";
-import User from "../models/User";
 import Database from "../database/Database";
 
 export default class DashboardScreen {
@@ -25,7 +24,7 @@ export default class DashboardScreen {
 
         switch (choice) {
             case "1":
-               // Você pode implementar esse método para listar as vagas
+               // Acessar Vagas Developer
                 this.router.navigateToVacancyScreenDeveloper();
                 break;
             case "2":
