@@ -29,10 +29,17 @@ export default class Database {
         return this.users.find((user) => user.getEmail() === email);
     }
 
+    // Buscar usuário por ID
     public findUserById(id: number): User | undefined {
         return this.users.find((user) => user.getID() === id);
     }
 
+    // Buscar usuário pela data de criação
+    public findUserByDate(date: Date): User | undefined {
+        return this.users.find((user) => user.getCreatedAt().getTime() === date.getTime());
+    }
+
+    // Filtrar usuários por tipo (desenvolvedor ou empresa)
     public getUsersByType(type: string): User[] {
         return this.users.filter(user => user.getTypeUser() === type);
     }

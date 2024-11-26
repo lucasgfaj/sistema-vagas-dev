@@ -1,4 +1,3 @@
-// EnterpriseScreen.ts
 import promptSync from "prompt-sync";
 import EnterpriseController from "../controllers/EnterpriseController";
 import Enterprise from "../models/Enterprise";

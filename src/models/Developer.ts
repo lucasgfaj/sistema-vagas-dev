@@ -1,11 +1,13 @@
 import User from "./User";
 import Skills from "./Skills";
+import IUser from "./packages/IUser";
 
-export default class Developer extends User {
+export default class Developer extends User implements IUser{
     private skills: Skills[] = [];
 
     constructor() {
         super();
+        this.setCreatedAt(); 
     }
 
     getSkills(): Skills[] {
@@ -16,8 +18,7 @@ export default class Developer extends User {
         this.skills = skills;
     }
 
-    public dateUser(){
-        return Date.now;
+      public override dateUser(): void {
+        console.log(`Data de registro da empresa: ${this.getCreatedAt()}`);
     }
-
 }

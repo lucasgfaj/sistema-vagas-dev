@@ -1,13 +1,14 @@
-export default class User {
+export default abstract class User {
 
     public id!: number;
     public name!: string;
     public email!: string;
     public password!: string;
     public typeUser!: "desenvolvedor" | "empresa";
-    
+    public createdAt!: Date;
+
     public constructor() {
-0
+        0
     }
 
     public getID(): number {
@@ -50,7 +51,19 @@ export default class User {
         this.typeUser = typeUser;
     }
 
-    public dateUser(){
-        console.log("Data não Implementada")
+    public dateUser(): void {
+        console.log("Data não implementada na classe base");
     }
+
+    public setCreatedAt(): void {
+        this.createdAt = new Date(); // Define a data atual como a data de criação
+    }
+
+    public getCreatedAt(): Date {
+        if (!this.createdAt) {
+            throw new Error("Data de criação não foi definida.");
+        }
+        return this.createdAt;
+    }
+
 }

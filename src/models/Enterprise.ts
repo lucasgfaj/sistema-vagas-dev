@@ -1,10 +1,12 @@
+import IUser from "./packages/IUser";
 import User from "./User";
 
-export default class Enterprise extends User {
+export default class Enterprise extends User implements IUser {
     private jobCode!: number;
 
     constructor() {
         super();
+        this.setCreatedAt();
     }
 
     getJobCode(): number {
@@ -15,8 +17,8 @@ export default class Enterprise extends User {
         this.jobCode = jobCode;
     }
 
-    public dateUser(){
-        return Date;
+    public override dateUser(): void {
+        console.log(`Data de registro da empresa: ${this.getCreatedAt()}`);
     }
 
 

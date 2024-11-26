@@ -1,4 +1,3 @@
-// view/PrimaryScreen.ts
 import promptSync from "prompt-sync";
 import Router from "../Router";
 

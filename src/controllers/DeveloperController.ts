@@ -1,7 +1,7 @@
 import Skills from "../models/Skills";
 import Database from "../database/Database";
 import Developer from "../models/Developer";
-
+import Validator from "../models/Validator";
 export default class DeveloperController {
 
     private db: Database;
@@ -25,9 +25,14 @@ export default class DeveloperController {
 
     // Método para registrar o desenvolvedor no banco de dados
     public registerNewDeveloper(developer: Developer): void {
+
+     
         // Gerar ID para o desenvolvedor
         const newId = this.generateDeveloperID();
         developer.setID(newId);
+
+        // Definir a data de criação
+        developer.setCreatedAt();
 
         // Adicionar no banco de dados
         this.db.addUser(developer);
@@ -49,4 +54,5 @@ export default class DeveloperController {
         }
         return skills;
     }
+
 }

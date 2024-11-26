@@ -1,7 +1,5 @@
 import promptSync from "prompt-sync";
 import Router from "../Router";
-import DeveloperController from "../controllers/DeveloperController";
-import EnterpriseController from "../controllers/EnterpriseController";
 import Database from "../database/Database";
 
 export default class UserScreen {
@@ -81,27 +79,33 @@ export default class UserScreen {
             this.router.navigateToPrimaryScreen();
         }
     }
-
-    // Método para listar todos os usuários (Administrador)
     public listAllUsers(): void {
         const userAdmin = this.prompt("Digite Usuário Administrador: ");
         const passwordAdmin = this.prompt("Digite a Senha Administrador: ");
-
+    
         if (userAdmin === "admin" && passwordAdmin === "admin") {
             console.log("Acesso concedido. Listando todos os usuários:");
+    
+            // Obter todos os usuários do banco de dados
             const users = this.db.getUsers();
-
+    
             if (users.length === 0) {
                 console.log("Nenhum usuário cadastrado.");
             } else {
                 users.forEach(user => {
-                    console.log(`ID: ${user.getID()}, Nome: ${user.getName()}, Tipo: ${user.getTypeUser()}`);
+                    // Exibindo ID, Nome, Email, Senha e Data de Criação
+                    console.log(`ID: ${user.getID()}`);
+                    console.log(`Nome: ${user.getName()}`);
+                    console.log(`Email: ${user.getEmail()}`);
+                    console.log(`Senha: ${user.getPassword()}`);
+                    console.log(`Data de Criação: ${user.getCreatedAt().toLocaleDateString("pt-BR")}`);
+                    console.log('----------------------------------------');  // Separador entre usuários
                 });
             }
         } else {
             console.log("Usuário ou senha do administrador incorretos.");
         }
-
+    
         this.router.navigateToPrimaryScreen();
     }
 

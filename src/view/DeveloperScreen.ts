@@ -1,7 +1,5 @@
-// DeveloperScreen.ts
 import promptSync from "prompt-sync";
 import DeveloperController from "../controllers/DeveloperController";
-import Developer from "../models/Developer";
 import Router from "../Router";
 import Database from "../database/Database";
 
@@ -13,7 +11,7 @@ export default class DeveloperScreen {
 
     constructor(router: Router) {
         this.router = router;
-        this.developerController = new DeveloperController(this.db);
+        this.developerController = new DeveloperController(this.db); // Passando o validator
     }
 
     // Método para registrar um novo desenvolvedor
@@ -22,7 +20,7 @@ export default class DeveloperScreen {
         console.log("Cadastro de Desenvolvedor");
         console.log("-------------------------------------------------------------------------------");
 
-        let developer: Developer = this.developerController.getNewDeveloper();
+        let developer = this.developerController.getNewDeveloper();
 
         // Obter os dados do desenvolvedor
         developer.setName(this.prompt("Informe seu Nome: "));
@@ -127,4 +125,5 @@ export default class DeveloperScreen {
         }
     }
 
+    
 }
