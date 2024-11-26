@@ -15,4 +15,9 @@ export default class Developer extends User {
     setSkills(skills: Skills[]): void {
         this.skills = skills;
     }
+
+    public dateUser(){
+        return Date.now;
+    }
+
 }

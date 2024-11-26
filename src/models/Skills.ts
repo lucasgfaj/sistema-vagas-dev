@@ -1,8 +1,8 @@
 export default class Skills {
     private name: string;
-    private level: string;
+    private level?: string;
 
-    constructor(name: string, level: string) {
+    constructor(name: string, level?: string) {
         this.name = name;
         this.level = level;
     }
@@ -16,10 +16,10 @@ export default class Skills {
     }
     
     getLevel(): string {
-        return this.level;
+      return this.level ?? "Nível não definido";
     }
 
-    // Define o nível da habilidade
+    // Define o nível da habil  idade
      setLevel(newLevel: string): void {
      const validateLevel = ["Júnior", "Pleno", "Senior"];
      if (validateLevel.includes(newLevel)) {

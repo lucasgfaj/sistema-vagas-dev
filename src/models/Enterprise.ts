@@ -14,4 +14,10 @@ export default class Enterprise extends User {
     setJobCode(jobCode: number): void {
         this.jobCode = jobCode;
     }
+
+    public dateUser(){
+        return Date;
+    }
+
+
 }

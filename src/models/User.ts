@@ -5,7 +5,7 @@ export default class User {
     public email!: string;
     public password!: string;
     public typeUser!: "desenvolvedor" | "empresa";
-
+    
     public constructor() {
 0
     }
@@ -50,4 +50,7 @@ export default class User {
         this.typeUser = typeUser;
     }
 
+    public dateUser(){
+        console.log("Data não Implementada")
+    }
 }
