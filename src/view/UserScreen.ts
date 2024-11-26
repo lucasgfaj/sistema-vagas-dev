@@ -3,22 +3,14 @@ import Router from "../Router";
 import DeveloperController from "../controllers/DeveloperController";
 import EnterpriseController from "../controllers/EnterpriseController";
 import Database from "../database/Database";
-import User from "../models/User";
-import Developer from "../models/Developer";
-import Enterprise from "../models/Enterprise";
 
 export default class UserScreen {
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
 
-    private developerController: DeveloperController;
-    private enterpriseController: EnterpriseController;
-
     constructor(router: Router) {
         this.router = router;
-        this.developerController = new DeveloperController(this.db);
-        this.enterpriseController = new EnterpriseController(this.db);
     }
 
     // Método para registrar um novo usuário
@@ -40,12 +32,12 @@ export default class UserScreen {
         switch (typeUser) {
             case "1":
                 // Registrar Desenvolvedor
-                this.registerDeveloper();
+                this.router.navigateToRegisterDevelop();
                 break;
 
             case "2":
                 // Registrar Empresa
-                this.registerEnterprise();
+                this.router.navigateToRegisterEnterprise();
                 break;
 
             default:
@@ -58,33 +50,6 @@ export default class UserScreen {
         this.router.navigateToPrimaryScreen();
     }
 
-    private registerDeveloper(): void {
-        let developer: Developer = this.developerController.getNewDeveloper();
-
-        // Obter os dados do desenvolvedor
-        developer.setName(this.prompt("Informe seu Nome: "));
-        developer.setEmail(this.prompt("Informe o e-mail: "));
-        developer.setPassword(this.prompt("Informe a senha: "));
-        
-        // Registrar as habilidades
-        const skills = this.developerController.registerSkills();
-        developer.setSkills(skills);
-
-        // Registrar no banco de dados (controlador se encarrega de gerar o ID)
-        this.developerController.registerNewDeveloper(developer);
-    }
-
-    private registerEnterprise(): void {
-        let enterprise: Enterprise = this.enterpriseController.getNewEnterprise();
-
-        // Obter os dados da empresa
-        enterprise.setName(this.prompt("Informe a Razão Social: "));
-        enterprise.setEmail(this.prompt("Informe o e-mail: "));
-        enterprise.setPassword(this.prompt("Informe a senha: "));
-        
-        // Registrar no banco de dados (controlador se encarrega de gerar o ID)
-        this.enterpriseController.registerNewEnterprise(enterprise);
-    }
 
       // Método de login
       public loginUser(): void {

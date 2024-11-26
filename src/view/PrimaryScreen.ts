@@ -39,6 +39,7 @@ export default class PrimaryScreen {
                     break;
 
                 case "3":   
+                    // Listar Todos os Usuários
                     this.router.navigateToListAllUsers();
                     break;
 

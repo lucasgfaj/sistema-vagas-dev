@@ -1,14 +1,43 @@
+// DeveloperScreen.ts
 import promptSync from "prompt-sync";
+import DeveloperController from "../controllers/DeveloperController";
+import Developer from "../models/Developer";
 import Router from "../Router";
 import Database from "../database/Database";
 
-export default class DashboardScreen {
+export default class DeveloperScreen {
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
+    private developerController: DeveloperController;
 
     constructor(router: Router) {
         this.router = router;
+        this.developerController = new DeveloperController(this.db);
+    }
+
+    // Método para registrar um novo desenvolvedor
+    public registerDeveloper(): void {
+        console.log("-------------------------------------------------------------------------------");
+        console.log("Cadastro de Desenvolvedor");
+        console.log("-------------------------------------------------------------------------------");
+
+        let developer: Developer = this.developerController.getNewDeveloper();
+
+        // Obter os dados do desenvolvedor
+        developer.setName(this.prompt("Informe seu Nome: "));
+        developer.setEmail(this.prompt("Informe o e-mail: "));
+        developer.setPassword(this.prompt("Informe a senha: "));
+        
+        // Registrar as habilidades
+        const skills = this.developerController.registerSkills();
+        developer.setSkills(skills);
+
+        // Registrar no banco de dados (controlador se encarrega de gerar o ID)
+        this.developerController.registerNewDeveloper(developer);
+
+        console.log("Desenvolvedor registrado com sucesso!");
+        this.router.navigateToPrimaryScreen();
     }
 
     public dashboardDeveloper(): void {
@@ -40,28 +69,31 @@ export default class DashboardScreen {
         }
     }
 
-    public dashboardEnterprise(): void {
+    public vacancyDeveloper(): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log(`Bem-vindo(a), (Inserir Nome)`);
+        console.log(`Opções de Vagas - Developer (Inserir Nome):`);
         console.log("");
-        console.log("1 - Gerenciar Vagas");
-        console.log("2 - Sair");
+        console.log("1 - Buscar Vagas");
+        console.log("2 - Minhas Candidaturas");
+        console.log("3 - Voltar ao Dashboard");
         console.log("-------------------------------------------------------------------------------");
 
         const choice = this.prompt("Digite a opção desejada: ").trim();
 
         switch (choice) {
             case "1":
-                // Gerenciar Vagas
-                this.router.navigateToVacancyScreenEnterprise();
+             // Buscar Vagas
                 break;
             case "2":
-                // Voltar para a tela PrimaryScreen
-                this.router.navigateToPrimaryScreen();
+              // Listar Vagas do Candidato
+                break;
+            case "3":
+                this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.dashboardEnterprise(); // Reexibir o menu
+                this.vacancyDeveloper(); // Reexibir o menu
         }
     }
+
 }

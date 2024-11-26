@@ -1,24 +1,25 @@
 // Router.ts
-import DashboardScreen from "./view/DashboardScreen";
+import DeveloperScreen from "./view/DeveloperScreen";
+import EnterpriseScreen from "./view/EnterpriseScreen";
 import PrimaryScreen from "./view/PrimaryScreen";
 import SkillsScreen from "./view/SkillsScreen";
 import UserScreen from "./view/UserScreen";
-import VacancyScreen from "./view/VacancyScreen";
 
 export default class Router {
       
     private primaryScreen: PrimaryScreen = new PrimaryScreen(this);
     private userScreen: UserScreen = new UserScreen(this);
-    private dashboardScreen: DashboardScreen = new DashboardScreen(this);
     private skillsScreen: SkillsScreen = new SkillsScreen(this);
-    private vacancyScreen: VacancyScreen = new VacancyScreen(this);
-        
+    private developerScreen: DeveloperScreen = new DeveloperScreen(this);
+    private enterpriseScreen: EnterpriseScreen = new EnterpriseScreen(this);
+    
+
     constructor() {
         this.primaryScreen = new PrimaryScreen(this);
         this.userScreen = new UserScreen(this);
-        this.dashboardScreen = new DashboardScreen(this);
         this.skillsScreen = new SkillsScreen(this);
-        this.vacancyScreen = new VacancyScreen(this);
+        this.developerScreen = new DeveloperScreen(this);
+        this.enterpriseScreen = new EnterpriseScreen(this);
         //PrimaryScreen
         this.navigateToPrimaryScreen();
     }
@@ -31,6 +32,18 @@ export default class Router {
     // Método para navegar para a tela RegisterUser
     public navigateToRegisterUser(): void {
         this.userScreen.registerUser();
+    }
+
+    // Método para navegar para RegisterDeveloper 
+
+     public navigateToRegisterDevelop(): void {
+        this.developerScreen.registerDeveloper();
+    }
+
+    // Método para navegar para RegisterEnterprise
+
+    public navigateToRegisterEnterprise(): void {
+        this.enterpriseScreen.registerEnterprise();
     }
 
     // Método para navegar para LoginUser
@@ -46,12 +59,12 @@ export default class Router {
 
     // Método para navegador para a tela de Dashboard Developer
     public navigateToDashboardDeveloper(): void {
-        this.dashboardScreen.dashboardDeveloper();
+        this.developerScreen.dashboardDeveloper();
     }
 
     // Método para navegador para a tela de Dashboard Enterprise
     public navigateToDashboardEnterprise(): void {
-        this.dashboardScreen.dashboardEnterprise();
+        this.enterpriseScreen.dashboardEnterprise();
     }
 
     // Método para navegador para a tela Skills Developer
@@ -61,11 +74,11 @@ export default class Router {
 
     // Método para navegador para a tela Vacancy Developer
     public navigateToVacancyScreenDeveloper(): void{
-        this.vacancyScreen.vacancyDeveloper();
+        this.developerScreen.vacancyDeveloper();
     }
 
     // Método para navegador para a tela Vacancy Enterprise
     public navigateToVacancyScreenEnterprise(): void{
-        this.vacancyScreen.vacancyEnterprise();
+        this.enterpriseScreen.vacancyEnterprise();
     }
 }

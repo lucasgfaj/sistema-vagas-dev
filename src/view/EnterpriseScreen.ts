@@ -1,40 +1,63 @@
+// EnterpriseScreen.ts
 import promptSync from "prompt-sync";
+import EnterpriseController from "../controllers/EnterpriseController";
+import Enterprise from "../models/Enterprise";
 import Router from "../Router";
 import Database from "../database/Database";
 
-export default class VacancyScreen {
+export default class EnterpriseScreen {
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
+    private enterpriseController: EnterpriseController;
 
     constructor(router: Router) {
         this.router = router;
+        this.enterpriseController = new EnterpriseController(this.db);
     }
 
-    public vacancyDeveloper(): void {
+    // Método para registrar uma nova empresa
+    public registerEnterprise(): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log(`Opções de Vagas - Developer (Inserir Nome):`);
+        console.log("Cadastro de Empresa");
+        console.log("-------------------------------------------------------------------------------");
+
+        let enterprise: Enterprise = this.enterpriseController.getNewEnterprise();
+
+        // Obter os dados da empresa
+        enterprise.setName(this.prompt("Informe a Razão Social: "));
+        enterprise.setEmail(this.prompt("Informe o e-mail: "));
+        enterprise.setPassword(this.prompt("Informe a senha: "));
+        
+        // Registrar no banco de dados (controlador se encarrega de gerar o ID)
+        this.enterpriseController.registerNewEnterprise(enterprise);
+
+        console.log("Empresa registrada com sucesso!");
+        this.router.navigateToPrimaryScreen();
+    }
+
+    public dashboardEnterprise(): void {
+        console.log("-------------------------------------------------------------------------------");
+        console.log(`Bem-vindo(a), (Inserir Nome)`);
         console.log("");
-        console.log("1 - Buscar Vagas");
-        console.log("2 - Minhas Candidaturas");
-        console.log("3 - Voltar ao Dashboard");
+        console.log("1 - Gerenciar Vagas");
+        console.log("2 - Sair");
         console.log("-------------------------------------------------------------------------------");
 
         const choice = this.prompt("Digite a opção desejada: ").trim();
 
         switch (choice) {
             case "1":
-             // Buscar Vagas
+                // Gerenciar Vagas
+                this.router.navigateToVacancyScreenEnterprise();
                 break;
             case "2":
-              // Listar Vagas do Candidato
-                break;
-            case "3":
-                this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
+                // Voltar para a tela PrimaryScreen
+                this.router.navigateToPrimaryScreen();
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.vacancyDeveloper(); // Reexibir o menu
+                this.dashboardEnterprise(); // Reexibir o menu
         }
     }
 
