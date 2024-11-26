@@ -45,6 +45,8 @@ export default class PrimaryScreen {
 
                 case "4":
                     showScreen = false;
+                    console.log("Saindo do sistema...");
+                    process.exit(0);
                     break;
 
                 default:
