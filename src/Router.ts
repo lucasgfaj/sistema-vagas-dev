@@ -2,14 +2,12 @@
 import DeveloperScreen from "./view/DeveloperScreen";
 import EnterpriseScreen from "./view/EnterpriseScreen";
 import PrimaryScreen from "./view/PrimaryScreen";
-import SkillsScreen from "./view/SkillsScreen";
 import UserScreen from "./view/UserScreen";
 
 export default class Router {
       
     private primaryScreen: PrimaryScreen = new PrimaryScreen(this);
     private userScreen: UserScreen = new UserScreen(this);
-    private skillsScreen: SkillsScreen = new SkillsScreen(this);
     private developerScreen: DeveloperScreen = new DeveloperScreen(this);
     private enterpriseScreen: EnterpriseScreen = new EnterpriseScreen(this);
     
@@ -17,7 +15,6 @@ export default class Router {
     constructor() {
         this.primaryScreen = new PrimaryScreen(this);
         this.userScreen = new UserScreen(this);
-        this.skillsScreen = new SkillsScreen(this);
         this.developerScreen = new DeveloperScreen(this);
         this.enterpriseScreen = new EnterpriseScreen(this);
         //PrimaryScreen
@@ -69,7 +66,7 @@ export default class Router {
 
     // Método para navegador para a tela Skills Developer
     public navigateToSkillsScreen(): void{
-        this.skillsScreen.skillsDeveloper();
+        this.developerScreen.skillsDeveloper();
     }
 
     // Método para navegador para a tela Vacancy Developer
