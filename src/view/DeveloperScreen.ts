@@ -2,6 +2,7 @@ import promptSync from "prompt-sync";
 import DeveloperController from "../controllers/DeveloperController";
 import Router from "../Router";
 import Database from "../database/Database";
+import Validator from "../models/Validator";
 
 export default class DeveloperScreen {
     private prompt = promptSync();
@@ -11,11 +12,13 @@ export default class DeveloperScreen {
 
     constructor(router: Router) {
         this.router = router;
-        this.developerController = new DeveloperController(this.db); // Passando o validator
+
+        const validator = new Validator();
+        this.developerController = new DeveloperController(this.db, validator); // Passando o validator
     }
 
-    // Método para registrar um novo desenvolvedor
-    public registerDeveloper(): void {
+     // Método para registrar um novo desenvolvedor
+     public registerDeveloper(): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Cadastro de Desenvolvedor");
         console.log("-------------------------------------------------------------------------------");
@@ -26,13 +29,18 @@ export default class DeveloperScreen {
         developer.setName(this.prompt("Informe seu Nome: "));
         developer.setEmail(this.prompt("Informe o e-mail: "));
         developer.setPassword(this.prompt("Informe a senha: "));
-        
+
         // Registrar as habilidades
         const skills = this.developerController.registerSkills();
         developer.setSkills(skills);
 
-        // Registrar no banco de dados (controlador se encarrega de gerar o ID)
-        this.developerController.registerNewDeveloper(developer);
+        // Validar e registrar o desenvolvedor
+        const isValid = this.developerController.validateAndRegisterDeveloper(developer);
+
+        if (!isValid) {
+            console.log("Erro no cadastro. Por favor, verifique as habilidades.");
+            return; // Não continuar o fluxo caso a validação falhe
+        }
 
         console.log("Desenvolvedor registrado com sucesso!");
         this.router.navigateToPrimaryScreen();
@@ -51,11 +59,11 @@ export default class DeveloperScreen {
 
         switch (choice) {
             case "1":
-               // Acessar Vagas Developer
+                // Acessar Vagas Developer
                 this.router.navigateToVacancyScreenDeveloper();
                 break;
             case "2":
-              // Gerenciar as habilidades do usuário
+                // Gerenciar as habilidades do usuário
                 this.router.navigateToSkillsScreen();
                 break;
             case "3":
@@ -80,10 +88,10 @@ export default class DeveloperScreen {
 
         switch (choice) {
             case "1":
-             // Buscar Vagas
+                // Buscar Vagas
                 break;
             case "2":
-              // Listar Vagas do Candidato
+                // Listar Vagas do Candidato
                 break;
             case "3":
                 this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
@@ -108,13 +116,13 @@ export default class DeveloperScreen {
 
         switch (choice) {
             case "1":
-             // Listar Habilidades
+                // Listar Habilidades
                 break;
             case "2":
-             // Adicionar Habilidades
+                // Adicionar Habilidades
                 break;
             case "3":
-             // Remover Habilidades
+                // Remover Habilidades
                 break;
             case "4":
                 this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
@@ -125,5 +133,5 @@ export default class DeveloperScreen {
         }
     }
 
-    
+
 }
