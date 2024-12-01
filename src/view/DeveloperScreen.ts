@@ -117,6 +117,8 @@ export default class DeveloperScreen {
         });
     
         const vacancyChoice = this.prompt("Digite o número da vaga que deseja se inscrever: ").trim();
+        if (vacancyChoice.trim().toLowerCase() === "B") this.dashboardDeveloper();
+
         const selectedVacancy = vacancies[parseInt(vacancyChoice) - 1];
         if (!selectedVacancy) {
           console.log("Vaga inválida.");
@@ -150,6 +152,7 @@ export default class DeveloperScreen {
         });
     
         const choice = this.prompt("Digite o número da vaga que deseja desistir: ").trim();
+        if (choice.trim().toLowerCase() === "B") this.dashboardDeveloper();
         const selectedVacancy = vacancies[parseInt(choice) - 1];
         if (!selectedVacancy) {
           console.log("Vaga inválida.");
@@ -173,12 +176,15 @@ export default class DeveloperScreen {
         switch (choice) {
             case "1":
                 // Listar Habilidades
+                this.listSkills();
                 break;
             case "2":
                 // Adicionar Habilidades
+                this.addSkill();
                 break;
             case "3":
                 // Remover Habilidades
+                this.removeSkill();
                 break;
             case "4":
                 this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
@@ -188,6 +194,12 @@ export default class DeveloperScreen {
                 this.skillsDeveloper(); // Reexibir o menu
         }
     }
+
+    public listSkills(): void {};
+
+    public addSkill(): void {};
+
+    public removeSkill(): void {};
 
 
 }

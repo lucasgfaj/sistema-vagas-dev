@@ -104,10 +104,13 @@ export default class EnterpriseScreen {
         console.log("-------------------------------------------------------------------------------");
     
         const title = this.prompt("Título da vaga: ").trim();
+        if (title.trim().toLowerCase() === "4") this.vacancyEnterprise();
         const description = this.prompt("Descrição: ").trim();
+        if (description.trim().toLowerCase() === "4") this.vacancyEnterprise();
         const requirements = this.prompt("Requisitos (separados por vírgula): ").trim().split(",");
         const language = this.prompt("Linguagem desejada: ").trim();
-    
+        if (language.trim().toLowerCase() === "4") this.vacancyEnterprise();
+        
         this.vacancyController.createVacancy(title, description, requirements, language);
         console.log("Vaga criada com sucesso!");
         this.vacancyEnterprise();
