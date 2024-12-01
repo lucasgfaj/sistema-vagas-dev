@@ -1,6 +1,6 @@
 export default class Vacancy {
     private id!: number; // ID único da vaga
-    private candidates: string[] = [];
+    private candidates: number[] = []; // Alterando para number[] para armazenar IDs de desenvolvedores
 
     constructor(
         private title: string,
@@ -49,11 +49,25 @@ export default class Vacancy {
         this.requirements = requirements;
     }
 
-    public addCandidate(candidate: string): void {
-        this.candidates.push(candidate);
+    // Adiciona o ID de um candidato à vaga
+    public addCandidate(candidateId: number): void {
+        if (!this.candidates.includes(candidateId)) {
+            this.candidates.push(candidateId);
+        }
     }
 
-    public getCandidates(): string[] {
+    // Remove o candidato da vaga com base no ID
+    public removeCandidate(candidateId: number): void {
+        const index = this.candidates.indexOf(candidateId);
+        if (index !== -1) {
+            this.candidates.splice(index, 1);
+        } else {
+            console.log(`Candidato com ID ${candidateId} não encontrado.`);
+        }
+    }
+
+    // Retorna os IDs dos candidatos
+    public getCandidates(): number[] {
         return this.candidates;
     }
 }

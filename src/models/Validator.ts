@@ -5,7 +5,7 @@ import IValidator from "./packages/IValidator";
 export default class Validator implements IValidator {
     validate(developer: Developer): boolean {
         const skills = developer.getSkills();
-        
+
         // Verificar se o desenvolvedor tem habilidades
         if (skills.length === 0) {
             console.log("Erro: O desenvolvedor precisa ter pelo menos uma habilidade.");

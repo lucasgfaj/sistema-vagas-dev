@@ -3,18 +3,20 @@ import DeveloperController from "../controllers/DeveloperController";
 import Router from "../Router";
 import Database from "../database/Database";
 import Validator from "../models/Validator";
+import VacancyController from "../controllers/VacancyController";
 
 export default class DeveloperScreen {
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
     private developerController: DeveloperController;
-
+    private vacancyController: VacancyController;
     constructor(router: Router) {
         this.router = router;
 
         const validator = new Validator();
         this.developerController = new DeveloperController(this.db, validator); // Passando o validator
+        this.vacancyController = new VacancyController(this.db)
     }
 
      // Método para registrar um novo desenvolvedor
@@ -81,27 +83,81 @@ export default class DeveloperScreen {
         console.log("");
         console.log("1 - Buscar Vagas");
         console.log("2 - Minhas Candidaturas");
-        console.log("3 - Voltar ao Dashboard");
+        console.log("3 - Desistir de Candidatura");
+        console.log("4 - Voltar ao Dashboard");
         console.log("-------------------------------------------------------------------------------");
-
+    
         const choice = this.prompt("Digite a opção desejada: ").trim();
-
+    
         switch (choice) {
-            case "1":
-                // Buscar Vagas
-                break;
-            case "2":
-                // Listar Vagas do Candidato
-                break;
-            case "3":
-                this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
-                break;
-            default:
-                console.log("Opção inválida. Por favor, tente novamente.");
-                this.vacancyDeveloper(); // Reexibir o menu
+          case "1":
+            this.searchVacancies();
+            break;
+          case "2":
+            this.listMyCandidatures();
+            break;
+          case "3":
+            this.withdrawApplication();
+            break;
+          case "4":
+            this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
+            break;
+          default:
+            console.log("Opção inválida. Por favor, tente novamente.");
+            this.vacancyDeveloper(); // Reexibir o menu
         }
-    }
-
+      }
+    
+      // Buscar vagas e inscrever-se
+      private searchVacancies(): void {
+        console.log("-------------------------------------------------------------------------------");
+        const vacancies = this.vacancyController.listVacancies();
+        vacancies.forEach((vacancy, index) => {
+          console.log(`${index + 1}. ${vacancy.getTitle()} - ${vacancy.getDescription()}`);
+        });
+    
+        const vacancyChoice = this.prompt("Digite o número da vaga que deseja se inscrever: ").trim();
+        const selectedVacancy = vacancies[parseInt(vacancyChoice) - 1];
+        if (!selectedVacancy) {
+          console.log("Vaga inválida.");
+          return;
+        }
+    
+        const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+        this.vacancyController.registerDeveloperToVacancy(developerId, selectedVacancy.getTitle());
+      }
+    
+      // Listar candidaturas do desenvolvedor
+      private listMyCandidatures(): void {
+        console.log("-------------------------------------------------------------------------------");
+        const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+        this.db.getVacancies().forEach(vacancy => {
+          if (vacancy.getCandidates().includes(developerId)) {
+            console.log(`- ${vacancy.getTitle()}`);
+          }
+        });
+        console.log("-------------------------------------------------------------------------------");
+      }
+    
+      // Desistir de uma candidatura
+      private withdrawApplication(): void {
+        console.log("-------------------------------------------------------------------------------");
+        const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+        const vacancies = this.db.getVacancies().filter(vacancy => vacancy.getCandidates().includes(developerId));
+    
+        vacancies.forEach((vacancy, index) => {
+          console.log(`${index + 1}. ${vacancy.getTitle()}`);
+        });
+    
+        const choice = this.prompt("Digite o número da vaga que deseja desistir: ").trim();
+        const selectedVacancy = vacancies[parseInt(choice) - 1];
+        if (!selectedVacancy) {
+          console.log("Vaga inválida.");
+          return;
+        }
+    
+        this.vacancyController.removeDeveloperFromVacancy(developerId, selectedVacancy.getTitle());
+      }
     public skillsDeveloper(): void {
         console.log("-------------------------------------------------------------------------------");
         console.log(`Opções de Habilidades - Developer (Inserir Nome):`);
