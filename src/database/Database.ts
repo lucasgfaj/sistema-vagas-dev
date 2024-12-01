@@ -1,10 +1,13 @@
 import User from "../models/User";
+import Vacancy from "../models/Vacancy";
 
 export default class Database {
     private static instance: Database;
     private users: User[] = []; // Armazena os usuários cadastrados
+    private vacancies: Vacancy[] = [];
+    private vacancyIdCounter: number = 1;
 
-    private constructor() {}
+    private constructor() { }
 
     // Singleton para garantir uma única instância
     public static getInstance(): Database {
@@ -42,5 +45,18 @@ export default class Database {
     // Filtrar usuários por tipo (desenvolvedor ou empresa)
     public getUsersByType(type: string): User[] {
         return this.users.filter(user => user.getTypeUser() === type);
+    }
+    public addVacancy(vacancy: Vacancy): void {
+        // Atribuir um ID único à vaga antes de adicioná-la
+        vacancy.setId(this.vacancyIdCounter++);
+        this.vacancies.push(vacancy);
+    }
+
+    public getVacancies(): Vacancy[] {
+        return this.vacancies;
+    }
+
+    public removeVacancy(index: number): void {
+        this.vacancies.splice(index, 1);
     }
 }
