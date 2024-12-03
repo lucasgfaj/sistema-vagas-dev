@@ -2,6 +2,7 @@ import Skills from "../models/Skills";
 import Database from "../database/Database";
 import Developer from "../models/Developer";
 import Validator from "../models/Validator";
+import ProviderErrors from "../models/ProviderError";
 export default class DeveloperController {
     private skills: Skills[] = [];
     private db: Database;
@@ -89,7 +90,7 @@ export default class DeveloperController {
     public validateAndRegisterDeveloper(developer: Developer): boolean {
         // Validando as habilidades antes de registrar
         if (!this.validator.validate(developer)) {
-            return false;
+            throw new ProviderErrors(1);
         }
 
         // Se a validação passar, registra o desenvolvedor
