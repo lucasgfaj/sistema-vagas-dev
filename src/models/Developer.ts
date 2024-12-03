@@ -18,7 +18,7 @@ export default class Developer extends User implements IUser{
         this.skills = skills;
     }
 
-      public override dateUser(): void {
-        console.log(`Data de registro da empresa: ${this.getCreatedAt()}`);
+    public dateUser(): void {
+        console.log(`Developer: ${this.name}, Registrado em: ${this.getCreatedAt()}`);
     }
 }

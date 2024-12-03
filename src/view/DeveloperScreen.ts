@@ -36,16 +36,16 @@ export default class DeveloperScreen {
     const skills = this.developerController.registerSkills();
     developer.setSkills(skills);
 
-    // Validar e registrar o desenvolvedor
-    const isValid = this.developerController.validateAndRegisterDeveloper(developer);
-
-    if (!isValid) {
-      console.log("Erro no cadastro. Por favor, verifique as habilidades.");
-      return; // Não continuar o fluxo caso a validação falhe
+    try {
+      // Validar e registrar o desenvolvedor
+      this.developerController.validateAndRegisterDeveloper(developer);
     }
+    catch (error: any) {
+      error(1);
+    } finally {
+      this.router.navigateToPrimaryScreen();
 
-    console.log("Desenvolvedor registrado com sucesso!");
-    this.router.navigateToPrimaryScreen();
+    }
   }
 
   public dashboardDeveloper(): void {

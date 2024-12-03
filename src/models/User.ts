@@ -8,7 +8,6 @@ export default abstract class User {
     public createdAt!: Date;
 
     public constructor() {
-        0
     }
 
     public getID(): number {
@@ -51,12 +50,8 @@ export default abstract class User {
         this.typeUser = typeUser;
     }
 
-    public dateUser(): void {
-        console.log("Data não implementada na classe base");
-    }
-
     public setCreatedAt(): void {
-        this.createdAt = new Date(); // Define a data atual como a data de criação
+        this.createdAt = new Date(); 
     }
 
     public getCreatedAt(): Date {
@@ -65,5 +60,7 @@ export default abstract class User {
         }
         return this.createdAt;
     }
+
+    public abstract dateUser(): void
 
 }

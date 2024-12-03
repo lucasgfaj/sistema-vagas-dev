@@ -17,8 +17,8 @@ export default class Enterprise extends User implements IUser {
         this.jobCode = jobCode;
     }
 
-    public override dateUser(): void {
-        console.log(`Data de registro da empresa: ${this.getCreatedAt()}`);
+    public dateUser(): void {
+        console.log(`Empresa: ${this.name}, Registrado em: ${this.getCreatedAt()}`);
     }
 
 
