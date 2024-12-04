@@ -38,7 +38,7 @@ export default class EnterpriseScreen {
         this.router.navigateToPrimaryScreen();
     }
 
-    public dashboardEnterprise(): void {
+    public dashboardEnterprise(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log(`Bem-vindo(a), (Inserir Nome)`);
         console.log("");
@@ -51,7 +51,7 @@ export default class EnterpriseScreen {
         switch (choice) {
             case "1":
                 // Gerenciar Vagas
-                this.router.navigateToVacancyScreenEnterprise();
+                this.router.navigateToVacancyScreenEnterprise(userId);
                 break;
             case "2":
                 // Voltar para a tela PrimaryScreen
@@ -59,11 +59,11 @@ export default class EnterpriseScreen {
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.dashboardEnterprise(); // Reexibir o menu
+                this.dashboardEnterprise(userId); // Reexibir o menu
         }
     }
 
-    public vacancyEnterprise(): void {
+    public vacancyEnterprise(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log(`Opções de Gerenciamento de Vagas - Empresa (Inserir Nome):`);
         console.log("");
@@ -78,45 +78,45 @@ export default class EnterpriseScreen {
     
         switch (choice) {
             case "1":
-                this.createVacancy();
+                this.createVacancy(userId);
                 break;
             case "2":
-                this.listVacancies();
+                this.listVacancies(userId);
                 break;
             case "3":
-                this.listCandidates();
+                this.listCandidates(userId);
                 break;
             case "4":
-                this.deleteVacancy();
+                this.deleteVacancy(userId);
                 break;
             case "5":
-                this.router.navigateToDashboardEnterprise();
+                this.router.navigateToDashboardEnterprise(userId);
                 break;
             default:
                 console.log("Opção inválida. Por favor, tente novamente.");
-                this.vacancyEnterprise();
+                this.vacancyEnterprise(userId);
         }
     }
     
-    private createVacancy(): void {
+    private createVacancy(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Criar Nova Vaga");
         console.log("-------------------------------------------------------------------------------");
     
         const title = this.prompt("Título da vaga: ").trim();
-        if (title.trim().toLowerCase() === "4") this.vacancyEnterprise();
+        if (title.trim().toLowerCase() === "4") this.vacancyEnterprise(userId);
         const description = this.prompt("Descrição: ").trim();
-        if (description.trim().toLowerCase() === "4") this.vacancyEnterprise();
+        if (description.trim().toLowerCase() === "4") this.vacancyEnterprise(userId);
         const requirements = this.prompt("Requisitos (separados por vírgula): ").trim().split(",");
         const language = this.prompt("Linguagem desejada: ").trim();
-        if (language.trim().toLowerCase() === "4") this.vacancyEnterprise();
+        if (language.trim().toLowerCase() === "4") this.vacancyEnterprise(userId);
         
         this.vacancyController.createVacancy(title, description, requirements, language);
         console.log("Vaga criada com sucesso!");
-        this.vacancyEnterprise();
+        this.vacancyEnterprise(userId);
     }
     
-    private listVacancies(): void {
+    private listVacancies(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Minhas Vagas");
         console.log("-------------------------------------------------------------------------------");
@@ -133,10 +133,10 @@ export default class EnterpriseScreen {
                 console.log("-------------------------------------------------------------------------------");
             });
         }
-        this.vacancyEnterprise();
+        this.vacancyEnterprise(userId);
     }
     
-    private listCandidates(): void {
+    private listCandidates(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Ver Candidatos de uma Vaga");
         console.log("-------------------------------------------------------------------------------");
@@ -157,10 +157,10 @@ export default class EnterpriseScreen {
             console.log("Ocorreu um erro ao listar candidatos.");
         }
     
-        this.vacancyEnterprise();
+        this.vacancyEnterprise(userId);
     }
     
-    private deleteVacancy(): void {
+    private deleteVacancy(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Deletar Vaga");
         console.log("-------------------------------------------------------------------------------");
@@ -174,7 +174,7 @@ export default class EnterpriseScreen {
             console.log("Ocorreu um erro ao remover.");
         }
     
-        this.vacancyEnterprise();
+        this.vacancyEnterprise(userId);
     }
     
 }

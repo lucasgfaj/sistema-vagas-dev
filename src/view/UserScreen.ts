@@ -53,32 +53,38 @@ export default class UserScreen {
       public loginUser(): void {
         console.log("---- Login ----");
         console.log("Digite '4' a qualquer momento para voltar ao menu principal.");
-
+    
         const email = this.prompt("Digite o e-mail: ");
         if (email.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
-
+    
         const password = this.prompt("Digite a senha: ");
         if (password.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
-
+    
         const userDatabase = this.db.findUserByEmail(email);
-
+    
         if (userDatabase && userDatabase.getPassword() === password) {
             console.log(`Login bem-sucedido! Bem-vindo, ${userDatabase.getName()} (${userDatabase.getTypeUser()}).`);
-
-            // Verifica o tipo do usuário autenticado
-            if (userDatabase.getTypeUser() === "empresa") {
-                this.router.navigateToDashboardEnterprise(); // Redireciona para o dashboard da empresa
-            } else if (userDatabase.getTypeUser() === "desenvolvedor") {
-                this.router.navigateToDashboardDeveloper(); // Redireciona para o dashboard do desenvolvedor
-            } else {
-                console.log("Tipo de usuário inválido. Contate o suporte.");
-                this.router.navigateToPrimaryScreen();
-            }
+    
+            // Captura o ID do usuário
+            const userId = userDatabase.getID();
+    
+            // Armazenar ou passar o ID para as telas subsequentes, como o Dashboard
+            this.router.navigateToDashboard(userId, userDatabase.getTypeUser());
         } else {
             console.log("E-mail ou senha inválidos. Tente novamente.");
             this.router.navigateToPrimaryScreen();
         }
     }
+
+
+    public navigateToDashboard(userId: number, userType: string): void {
+        if (userType === "empresa") {
+            this.router.navigateToDashboardEnterprise(userId);
+        } else if (userType === "desenvolvedor") {
+            this.router.navigateToDashboardDeveloper(userId);
+        }
+    }
+
     public listAllUsers(): void {
         const userAdmin = this.prompt("Digite Usuário Administrador: ");
         const passwordAdmin = this.prompt("Digite a Senha Administrador: ");

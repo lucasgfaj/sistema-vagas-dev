@@ -1,4 +1,0 @@
-export interface IMatch {
-     jobCode: number;
-     skillCode: number;
-}

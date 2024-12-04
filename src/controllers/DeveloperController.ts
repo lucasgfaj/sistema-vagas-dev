@@ -3,6 +3,7 @@ import Database from "../database/Database";
 import Developer from "../models/Developer";
 import Validator from "../models/Validator";
 import ProviderErrors from "../models/ProviderError";
+
 export default class DeveloperController {
     private skills: Skills[] = [];
     private db: Database;
@@ -28,8 +29,6 @@ export default class DeveloperController {
 
     // Método para registrar o desenvolvedor no banco de dados
     public registerNewDeveloper(developer: Developer): void {
-
-
         // Gerar ID para o desenvolvedor
         const newId = this.generateDeveloperID();
         developer.setID(newId);
@@ -42,15 +41,23 @@ export default class DeveloperController {
         console.log(`Cadastro de Desenvolvedor concluído! Seja bem-vindo, ${developer.getName()}`);
     }
 
+    // Método para obter um desenvolvedor pelo ID
+    public getDeveloperById(id: number): Developer | undefined {
+        return this.db.findUserById(id) as Developer;
+    }
 
+
+
+    // Registrar Skills e Seleciona seu ID
     public registerSkills(): Skills[] {
         const prompt = require('prompt-sync')();
+        let skills: Skills[] = []; // Variável local para as habilidades
 
         while (true) {
             const name = prompt("Informe o nome da habilidade: ");
             const level = prompt("Informe o nível (Júnior, Pleno, Senior): ");
             const skill = new Skills(name, level);
-            this.skills.push(skill);
+            skills.push(skill); // Adiciona a habilidade na lista local
 
             console.log(`Habilidade "${skill.getName()}" com ID ${skill.getId()} registrada.`);
 
@@ -58,33 +65,37 @@ export default class DeveloperController {
             if (addMore !== "s") break;
         }
 
-        return this.skills;
+        return skills; // Retorna a lista de habilidades
     }
 
-    // Método para remover uma habilidade pelo ID
-    public removeSkill(skillId: number): boolean {
+    // Método para listar habilidades do desenvolvedor
+    public listSkills(developerId: number): void {
+        const developer = this.getDeveloperById(developerId);
+        if (developer) {
+            const skills = developer.getSkills();
+            if (skills.length > 0) {
+                console.log("Habilidades do desenvolvedor:");
+                skills.forEach(skill => {
+                    console.log(`ID: ${skill.getId()}, Nome: ${skill.getName()}, Nível: ${skill.getLevel()}`);
+                });
+            } else {
+                console.log("Nenhuma habilidade registrada.");
+            }
+        }
+    }
+
+    public removeSkills(skillId: number): void {
         const index = this.skills.findIndex(skill => skill.getId() === skillId);
         if (index !== -1) {
-            this.skills.splice(index, 1);
-            console.log(`Habilidade com ID ${skillId} removida.`);
-            return true;
-        } else {
-            console.log(`Habilidade com ID ${skillId} não encontrada.`);
-            return false;
+            console.log("Habilidade não encontrada");
+            return;
         }
+        this.skills.splice(index, 1)
+        console.log("Habilidade com ID ${skillId} removida com sucesso!");
     }
 
-    // Método para listar todas as habilidades
-    public listSkills(): void {
-        if (this.skills.length === 0) {
-            console.log("Nenhuma habilidade registrada.");
-        } else {
-            console.log("Lista de habilidades registradas:");
-            this.skills.forEach(skill => {
-                console.log(`ID: ${skill.getId()}, Nome: ${skill.getName()}, Nível: ${skill.getLevel()}`);
-            });
-        }
-    }
+
+
 
     // Método para validar habilidades e registrar o desenvolvedor
     public validateAndRegisterDeveloper(developer: Developer): boolean {
@@ -97,5 +108,4 @@ export default class DeveloperController {
         this.registerNewDeveloper(developer);
         return true;
     }
-
 }

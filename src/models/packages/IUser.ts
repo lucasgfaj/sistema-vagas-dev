@@ -3,4 +3,5 @@ export default interface IUser {
     getName(): string;
     getEmail(): string;
     getTypeUser(): "desenvolvedor" | "empresa";
-}
+    getCreatedAt(): Date;
+}   

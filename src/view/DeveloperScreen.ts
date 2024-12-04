@@ -34,23 +34,22 @@ export default class DeveloperScreen {
 
     // Registrar as habilidades
     const skills = this.developerController.registerSkills();
-    developer.setSkills(skills);
+    developer.setSkills(skills); // Atribuir as habilidades ao desenvolvedor
 
     try {
       // Validar e registrar o desenvolvedor
       this.developerController.validateAndRegisterDeveloper(developer);
-    }
-    catch (error: any) {
+    } catch (error: any) {
       error(1);
     } finally {
       this.router.navigateToPrimaryScreen();
-
     }
   }
 
-  public dashboardDeveloper(): void {
+
+  public dashboardDeveloper(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
-    console.log(`Bem-vindo(a), (Inserir Nome)`);
+    console.log(`Bem-vindo(a)`);
     console.log("");
     console.log("1 - Vagas");
     console.log("2 - Habilidades");
@@ -62,22 +61,22 @@ export default class DeveloperScreen {
     switch (choice) {
       case "1":
         // Acessar Vagas Developer
-        this.router.navigateToVacancyScreenDeveloper();
+        this.router.navigateToVacancyScreenDeveloper(userId);
         break;
       case "2":
         // Gerenciar as habilidades do usuário
-        this.router.navigateToSkillsScreen();
+        this.router.navigateToSkillsScreen(userId);
         break;
       case "3":
         this.router.navigateToPrimaryScreen(); // Voltar para a tela principal
         break;
       default:
         console.log("Opção inválida. Por favor, tente novamente.");
-        this.dashboardDeveloper(); // Reexibir o menu
+        this.dashboardDeveloper(userId); // Reexibir o menu
     }
   }
 
-  public vacancyDeveloper(): void {
+  public vacancyDeveloper(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     console.log(`Opções de Vagas - Developer (Inserir Nome):`);
     console.log("");
@@ -91,25 +90,25 @@ export default class DeveloperScreen {
 
     switch (choice) {
       case "1":
-        this.searchVacancies();
+        this.searchVacancies(userId);
         break;
       case "2":
         this.listMyCandidatures();
         break;
       case "3":
-        this.withdrawApplication();
+        this.withdrawApplication(userId);
         break;
       case "4":
-        this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
+        this.dashboardDeveloper(userId); // Voltar para Dashboard
         break;
       default:
         console.log("Opção inválida. Por favor, tente novamente.");
-        this.vacancyDeveloper(); // Reexibir o menu
+        this.vacancyDeveloper(userId); // Reexibir o menu
     }
   }
 
   // Buscar vagas e inscrever-se
-  private searchVacancies(): void {
+  private searchVacancies(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     const vacancies = this.vacancyController.listVacancies();
     vacancies.forEach((vacancy, index) => {
@@ -117,7 +116,7 @@ export default class DeveloperScreen {
     });
 
     const vacancyChoice = this.prompt("Digite o número da vaga que deseja se inscrever: ").trim();
-    if (vacancyChoice.trim().toLowerCase() === "B") this.dashboardDeveloper();
+    if (vacancyChoice.trim().toLowerCase() === "B") this.dashboardDeveloper(userId);
 
     const selectedVacancy = vacancies[parseInt(vacancyChoice) - 1];
     if (!selectedVacancy) {
@@ -142,7 +141,7 @@ export default class DeveloperScreen {
   }
 
   // Desistir de uma candidatura
-  private withdrawApplication(): void {
+  private withdrawApplication(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     const developerId = 1; // Substitua pelo ID do desenvolvedor atual
     const vacancies = this.db.getVacancies().filter(vacancy => vacancy.getCandidates().includes(developerId));
@@ -152,7 +151,7 @@ export default class DeveloperScreen {
     });
 
     const choice = this.prompt("Digite o número da vaga que deseja desistir: ").trim();
-    if (choice.trim().toLowerCase() === "B") this.dashboardDeveloper();
+    if (choice.trim().toLowerCase() === "B") this.dashboardDeveloper(userId);
     const selectedVacancy = vacancies[parseInt(choice) - 1];
     if (!selectedVacancy) {
       console.log("Vaga inválida.");
@@ -161,7 +160,9 @@ export default class DeveloperScreen {
 
     this.vacancyController.removeDeveloperFromVacancy(developerId, selectedVacancy.getTitle());
   }
-  public skillsDeveloper(): void {
+
+
+  public skillsDeveloper(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     console.log(`Opções de Habilidades - Developer (Inserir Nome):`);
     console.log("");
@@ -176,7 +177,7 @@ export default class DeveloperScreen {
     switch (choice) {
       case "1":
         // Listar Habilidades
-        this.developerController.listSkills();
+        this.developerController.listSkills(userId);
         break;
       case "2":
         // Adicionar Habilidades
@@ -190,17 +191,17 @@ export default class DeveloperScreen {
         // Verifica se o ID é válido
         if (isNaN(skillRemoveId)) {
           console.log("Por favor, insira um ID válido.");
-          this.skillsDeveloper(); // Reexibir o menu
+          this.skillsDeveloper(userId); // Reexibir o menu
         } else {
-          this.developerController.removeSkill(skillRemoveId);
+          this.developerController.removeSkills(skillRemoveId)
         }
         break;
       case "4":
-        this.router.navigateToDashboardDeveloper(); // Voltar para Dashboard
+        this.dashboardDeveloper(userId);
         break;
       default:
         console.log("Opção inválida. Por favor, tente novamente.");
-        this.skillsDeveloper(); // Reexibir o menu
+        this.skillsDeveloper(userId); // Reexibir o menu
     }
   }
 }

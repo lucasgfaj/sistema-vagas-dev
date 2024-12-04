@@ -54,28 +54,36 @@ export default class Router {
         this.userScreen.listAllUsers();
     }
 
+    //
+    public navigateToDashboard(userId: number, userType: string): void {
+        if (userType === "empresa") {
+            this.navigateToDashboardEnterprise(userId);
+        } else if (userType === "desenvolvedor") {
+            this.navigateToDashboardDeveloper(userId);
+        }
+    }
+
     // Método para navegador para a tela de Dashboard Developer
-    public navigateToDashboardDeveloper(): void {
-        this.developerScreen.dashboardDeveloper();
+    public navigateToDashboardDeveloper(userId: number): void {
+        this.developerScreen.dashboardDeveloper(userId);
     }
 
     // Método para navegador para a tela de Dashboard Enterprise
-    public navigateToDashboardEnterprise(): void {
-        this.enterpriseScreen.dashboardEnterprise();
+    public navigateToDashboardEnterprise(userId: number): void {
+        this.enterpriseScreen.dashboardEnterprise(userId);
     }
-
     // Método para navegador para a tela Skills Developer
-    public navigateToSkillsScreen(): void{
-        this.developerScreen.skillsDeveloper();
+    public navigateToSkillsScreen(userId: number): void{
+        this.developerScreen.skillsDeveloper(userId);
     }
 
     // Método para navegador para a tela Vacancy Developer
-    public navigateToVacancyScreenDeveloper(): void{
-        this.developerScreen.vacancyDeveloper();
+    public navigateToVacancyScreenDeveloper(userId: number): void{
+        this.developerScreen.vacancyDeveloper(userId);
     }
 
     // Método para navegador para a tela Vacancy Enterprise
-    public navigateToVacancyScreenEnterprise(): void{
-        this.enterpriseScreen.vacancyEnterprise();
+    public navigateToVacancyScreenEnterprise(userId: number): void{
+        this.enterpriseScreen.vacancyEnterprise(userId);
     }
 }
