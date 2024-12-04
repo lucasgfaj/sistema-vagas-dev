@@ -13,11 +13,16 @@ export default class VacancyController {
   }
 
 
-  // Método para criar uma nova vaga
-  public createVacancy(title: string, description: string, requirements: string[], language: string): void {
-    const vacancy = new Vacancy(title, description, requirements, language);
-    this.db.addVacancy(vacancy);
-  }
+  public createVacancy(enterpriseId: number, title: string, description: string, requirements: string[], language: string): void {
+    const vacancy = new Vacancy(enterpriseId, title, description, requirements, language);
+    this.db.addVacancy(vacancy); // ID gerado automaticamente dentro do método addVacancy
+}
+
+
+  //Listar vagas de uma empresa especifica 
+  public listVacanciesByEnterprise(enterpriseId: number): Vacancy[] {
+    return this.db.getVacanciesByEnterpriseId(enterpriseId);
+}
 
   // Listar todas as vagas
   public listVacancies(): Vacancy[] {
@@ -25,14 +30,25 @@ export default class VacancyController {
   }
 
   // Deletar uma vaga
-  public deleteVacancy(title: string): void {
+  public deleteVacancyById(enterpriseId: number, vacancyId: number): void {
     const vacancies = this.db.getVacancies();
-    const index = vacancies.findIndex(v => v.getTitle() === title);
-    if (index === -1) {
-      throw new Error("Vaga não encontrada.");
+    
+    // Encontra a vaga pelo ID
+    const vacancy = vacancies.find(v => v.getId() === vacancyId);
+    
+    if (!vacancy) {
+        throw new Error("Vaga não encontrada.");
     }
+
+    // Verifica se a vaga pertence à empresa que está tentando excluí-la
+    if (vacancy.getEnterpriseId() !== enterpriseId) {
+        throw new Error("Você não tem permissão para excluir essa vaga.");
+    }
+
+    // Se a vaga for encontrada e pertence à empresa, remove a vaga
+    const index = vacancies.indexOf(vacancy);
     this.db.removeVacancy(index);
-  }
+}
 
   // Obter candidatos de uma vaga
    public getCandidatesForVacancy(title: string): number[] {  // Alterado para number[]

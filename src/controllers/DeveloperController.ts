@@ -3,11 +3,13 @@ import Database from "../database/Database";
 import Developer from "../models/Developer";
 import Validator from "../models/Validator";
 import ProviderErrors from "../models/ProviderError";
+import Vacancy from "../models/Vacancy";
 
 export default class DeveloperController {
     private skills: Skills[] = [];
     private db: Database;
     private validator: Validator;
+    private vacancies: Vacancy[] = [];
 
     constructor(db: Database, validator: Validator) {
         this.db = db;
@@ -45,8 +47,6 @@ export default class DeveloperController {
     public getDeveloperById(id: number): Developer | undefined {
         return this.db.findUserById(id) as Developer;
     }
-
-
 
     // Registrar Skills e Seleciona seu ID
     public registerSkills(): Skills[] {
@@ -94,9 +94,6 @@ export default class DeveloperController {
         console.log("Habilidade com ID ${skillId} removida com sucesso!");
     }
 
-
-
-
     // Método para validar habilidades e registrar o desenvolvedor
     public validateAndRegisterDeveloper(developer: Developer): boolean {
         // Validando as habilidades antes de registrar
@@ -108,4 +105,5 @@ export default class DeveloperController {
         this.registerNewDeveloper(developer);
         return true;
     }
+
 }

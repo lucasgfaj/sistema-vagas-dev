@@ -4,6 +4,7 @@ import Enterprise from "../models/Enterprise";
 import Router from "../Router";
 import Database from "../database/Database";
 import VacancyController from "../controllers/VacancyController";
+import ProviderErrors from "../models/ProviderError";
 
 export default class EnterpriseScreen {
     private prompt = promptSync();
@@ -103,6 +104,9 @@ export default class EnterpriseScreen {
         console.log("Criar Nova Vaga");
         console.log("-------------------------------------------------------------------------------");
     
+        // Garantir que o usuário que está criando a vaga é uma empresa
+        const enterpriseId = userId;  // Usando userId como enterpriseId para simplificação
+    
         const title = this.prompt("Título da vaga: ").trim();
         if (title.trim().toLowerCase() === "4") this.vacancyEnterprise(userId);
         const description = this.prompt("Descrição: ").trim();
@@ -110,8 +114,9 @@ export default class EnterpriseScreen {
         const requirements = this.prompt("Requisitos (separados por vírgula): ").trim().split(",");
         const language = this.prompt("Linguagem desejada: ").trim();
         if (language.trim().toLowerCase() === "4") this.vacancyEnterprise(userId);
-        
-        this.vacancyController.createVacancy(title, description, requirements, language);
+    
+        // Passando o enterpriseId corretamente
+        this.vacancyController.createVacancy(enterpriseId, title, description, requirements, language);
         console.log("Vaga criada com sucesso!");
         this.vacancyEnterprise(userId);
     }
@@ -121,7 +126,8 @@ export default class EnterpriseScreen {
         console.log("Minhas Vagas");
         console.log("-------------------------------------------------------------------------------");
     
-        const vacancies = this.vacancyController.listVacancies();
+        // Usando listVacanciesByEnterprise para listar as vagas da empresa com userId (enterpriseId)
+        const vacancies = this.vacancyController.listVacanciesByEnterprise(userId);
         if (vacancies.length === 0) {
             console.log("Nenhuma vaga cadastrada.");
         } else {
@@ -135,6 +141,7 @@ export default class EnterpriseScreen {
         }
         this.vacancyEnterprise(userId);
     }
+    
     
     private listCandidates(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
@@ -160,21 +167,26 @@ export default class EnterpriseScreen {
         this.vacancyEnterprise(userId);
     }
     
-    private deleteVacancy(userId: number): void {
+    public deleteVacancy(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Deletar Vaga");
         console.log("-------------------------------------------------------------------------------");
     
-        const title = this.prompt("Informe o título da vaga a ser deletada: ").trim();
+        // Solicita o ID da vaga a ser deletada
+        const vacancyId = parseInt(this.prompt("Informe o ID da vaga a ser deletada: ").trim());
     
         try {
-            this.vacancyController.deleteVacancy(title);
-            console.log(`Vaga "${title}" deletada com sucesso.`);
-        } catch (error) {
-            console.log("Ocorreu um erro ao remover.");
+            // Passando o enterpriseId (userId) e o vacancyId para a remoção
+            this.vacancyController.deleteVacancyById(userId, vacancyId);
+            console.log(`Vaga de ID ${vacancyId} deletada com sucesso.`);
+        } catch (error: any) {
+           throw new ProviderErrors(2);
+        }finally {
+
         }
     
         this.vacancyEnterprise(userId);
     }
+    
     
 }

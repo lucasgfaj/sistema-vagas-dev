@@ -73,6 +73,11 @@ export default class Database {
         this.vacancies.push(vacancy);
     }
 
+    
+    public getVacanciesByEnterpriseId(enterpriseId: number): Vacancy[] {
+        return this.vacancies.filter(vacancy => vacancy.getId() === enterpriseId);
+    }
+
     public getVacancies(): Vacancy[] {
         return this.vacancies;
     }

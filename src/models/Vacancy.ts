@@ -3,11 +3,21 @@ export default class Vacancy {
     private candidates: number[] = []; // Alterando para number[] para armazenar IDs de desenvolvedores
 
     constructor(
+        private enterpriseId: number,
         private title: string,
         private description: string,
         private requirements: string[],
         private language: string
     ) {}
+
+
+    public getEnterpriseId(): number {
+        return this.enterpriseId;
+    }
+
+    public setEnterpriseId(enterpriseId: number): void {
+        this.enterpriseId = enterpriseId;
+    }
 
     public getId(): number {
         return this.id;

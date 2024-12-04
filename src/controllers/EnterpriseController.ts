@@ -28,8 +28,14 @@ export default class EnterpriseController {
         const newId = this.generateEnterpriseID();
         enterprise.setID(newId);
 
+        enterprise.setCreatedAt();
+
         // Adicionar no banco de dados
         this.db.addUser(enterprise);
         console.log(`Cadastro de Empresa concluído! Seja bem-vindo, ${enterprise.getName()}`);
+    }
+
+    public getEnterpriseByID(id: number): Enterprise | undefined{
+        return this.db.findUserById(id) as Enterprise;
     }
 }
