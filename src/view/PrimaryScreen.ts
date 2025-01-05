@@ -17,7 +17,8 @@ export default class PrimaryScreen {
             "1 - Cadastrar\n" +
             "2 - Login\n" +
             "3 - Listar Todos os Usuários (Admin)\n" +
-            "4 - Sair\n" +
+            "4 - Relatórios em PDF\n" +
+            "5 - Sair\n" +
             "-------------------------------------------------------------------------------"
         );
 
@@ -42,7 +43,11 @@ export default class PrimaryScreen {
                     this.router.navigateToListAllUsers();
                     break;
 
-                case "4":
+                case "4": 
+                    // Relatórios
+                    console.log("Em Desenvolvimento.");
+                break;
+                case "5":
                     showScreen = false;
                     console.log("Saindo do sistema...");
                     process.exit(0);
