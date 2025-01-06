@@ -3,6 +3,7 @@ import DeveloperScreen from "./view/DeveloperScreen";
 import EnterpriseScreen from "./view/EnterpriseScreen";
 import PrimaryScreen from "./view/PrimaryScreen";
 import UserScreen from "./view/UserScreen";
+import ReportsScreen from "./view/ReportsScreen";
 
 export default class Router {
       
@@ -10,6 +11,7 @@ export default class Router {
     private userScreen: UserScreen = new UserScreen(this);
     private developerScreen: DeveloperScreen = new DeveloperScreen(this);
     private enterpriseScreen: EnterpriseScreen = new EnterpriseScreen(this);
+    private reportsScreen: ReportsScreen = new ReportsScreen(this);
     
 
     constructor() {
@@ -17,6 +19,7 @@ export default class Router {
         this.userScreen = new UserScreen(this);
         this.developerScreen = new DeveloperScreen(this);
         this.enterpriseScreen = new EnterpriseScreen(this);
+        this.reportsScreen = new ReportsScreen(this);
         //PrimaryScreen
         this.navigateToPrimaryScreen();
     }
@@ -49,7 +52,6 @@ export default class Router {
     }
 
     // Método para navegar para ListAllUsers
-
     public navigateToListAllUsers(): void {
         this.userScreen.listAllUsers();
     }
@@ -85,5 +87,10 @@ export default class Router {
     // Método para navegador para a tela Vacancy Enterprise
     public navigateToVacancyScreenEnterprise(userId: number): void{
         this.enterpriseScreen.vacancyEnterprise(userId);
+    }
+
+    // Reports
+    public navigateToReports(): void {
+        this.reportsScreen.reportScreen();
     }
 }

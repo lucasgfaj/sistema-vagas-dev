@@ -1,19 +1,17 @@
 import promptSync from "prompt-sync";
-import EnterpriseController from "../controllers/EnterpriseController";
-import Enterprise from "../models/Enterprise";
 import Router from "../Router";
 import Database from "../database/Database";
-import VacancyController from "../controllers/VacancyController";
-import ProviderErrors from "../models/ProviderError";
+import ReportsController from "../controllers/ReportsController";
+import path from "path";
 
-
-export default class EnterpriseScreen {
+export default class ReportsScreen {
     private prompt = promptSync();
     private router: Router;
-    private db = Database.getInstance();
+    private reportsController!: ReportsController;
 
     constructor(router: Router) {
         this.router = router;
+        this.reportsController = new ReportsController(); // Inicializa o ReportsController
     }
 
     public reportScreen(): void {
@@ -26,8 +24,36 @@ export default class EnterpriseScreen {
         console.log("4 - Relatório de Usuários do Tipo Empresa");
         console.log("5 - Sair");
         console.log(""); 
-        console.log("Os relátorios são gerados em PDF");
+        console.log("Os relatórios são gerados em PDF");
         console.log("");
         console.log("-------------------------------------------------------------------------------");
+    
+        const choice = this.prompt("Escolha uma opção: ");
+        const reportsDir = path.resolve(__dirname, "../../Reports");
+
+        switch (choice) {
+            case "1":
+                this.reportsController.generateAllUsersReport();
+                console.log(`Relatório de todos os usuários gerado na pasta: ${reportsDir}`);
+                break;
+            case "2":
+                this.reportsController.generateAllVacanciesReport();
+                console.log(`Relatório de todas as vagas gerado na pasta: ${reportsDir}`);
+                break;
+            case "3":
+                this.reportsController.generateDevelopersReport();
+                console.log(`Relatório de desenvolvedores gerado na pasta: ${reportsDir}`);
+                break;
+            case "4":
+                this.reportsController.generateEnterprisesReport();
+                console.log(`Relatório de empresas gerado na pasta: ${reportsDir}`);
+                break;
+            case "5":
+                console.log("Saindo...");
+                this.router.navigateToPrimaryScreen();
+                break;
+            default:
+                console.log("Opção inválida.");
+        }
     }
 }

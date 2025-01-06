@@ -45,8 +45,8 @@ export default class PrimaryScreen {
 
                 case "4": 
                     // Relatórios
-                    console.log("Em Desenvolvimento.");
-                break;
+                    this.router.navigateToReports();
+                    break;
                 case "5":
                     showScreen = false;
                     console.log("Saindo do sistema...");
