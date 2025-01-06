@@ -4,8 +4,10 @@ import Router from "../Router";
 import Database from "../database/Database";
 import Validator from "../models/Validator";
 import VacancyController from "../controllers/VacancyController";
+import InputService from "../services/input.service";
 
 export default class DeveloperScreen {
+  private inputService: InputService;
   private prompt = promptSync();
   private router: Router;
   private db = Database.getInstance();
@@ -13,7 +15,7 @@ export default class DeveloperScreen {
   private vacancyController: VacancyController;
   constructor(router: Router) {
     this.router = router;
-
+    this.inputService = new InputService();
     const validator = new Validator();
     this.developerController = new DeveloperController(this.db, validator); // Passando o validator
     this.vacancyController = new VacancyController(this.db)
@@ -22,20 +24,29 @@ export default class DeveloperScreen {
   // Método para registrar um novo desenvolvedor
   public registerDeveloper(): void {
     console.log("-------------------------------------------------------------------------------");
-    console.log("Cadastro de Desenvolvedor");
+    console.log("Cadastro de Desenvolvedor : Digte B para Cancelar");
     console.log("-------------------------------------------------------------------------------");
 
     let developer = this.developerController.getNewDeveloper();
 
     // Obter os dados do desenvolvedor
-    developer.setName(this.prompt("Informe seu Nome: "));
-    developer.setEmail(this.prompt("Informe o e-mail: "));
-    developer.setPassword(this.prompt("Informe a senha: "));
+    const name = this.inputService.promptWithCancel("Informe seu Nome: ");
+    if (name === null) return
+    const email = this.inputService.promptWithCancel("Informe o e-mail: ");
+    if (email === null) return
+    const password = this.inputService.promptWithCancel("Informe a senha: ");
+    if (password === null) return
+
+    developer.setName(name);
+    developer.setEmail(email);
+    developer.setPassword(password);
 
     // Registrar as habilidades
     const skills = this.developerController.registerSkills();
+   
     developer.setSkills(skills); // Atribuir as habilidades ao desenvolvedor
-
+    
+    
     try {
       // Validar e registrar o desenvolvedor
       this.developerController.validateAndRegisterDeveloper(developer);

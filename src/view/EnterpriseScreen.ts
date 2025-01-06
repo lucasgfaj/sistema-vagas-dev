@@ -5,16 +5,22 @@ import Router from "../Router";
 import Database from "../database/Database";
 import VacancyController from "../controllers/VacancyController";
 import ProviderErrors from "../models/ProviderError";
+import InputService from "../services/input.service";
+
 
 export default class EnterpriseScreen {
+    private inputService: InputService;
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
     private enterpriseController: EnterpriseController;
     private vacancyController: VacancyController;
+    
+    
 
     constructor(router: Router) {
         this.router = router;
+        this.inputService = new InputService();
         this.enterpriseController = new EnterpriseController(this.db);
         this.vacancyController = new VacancyController(this.db);
     }
@@ -22,15 +28,24 @@ export default class EnterpriseScreen {
     // Método para registrar uma nova empresa
     public registerEnterprise(): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log("Cadastro de Empresa");
+        console.log("Cadastro de Empresa :  Digte B para Cancelar");
         console.log("-------------------------------------------------------------------------------");
 
         let enterprise: Enterprise = this.enterpriseController.getNewEnterprise();
 
         // Obter os dados da empresa
-        enterprise.setName(this.prompt("Informe a Razão Social: "));
-        enterprise.setEmail(this.prompt("Informe o e-mail: "));
-        enterprise.setPassword(this.prompt("Informe a senha: "));
+        const name = this.inputService.promptWithCancel("Informe a Razão Social: ");
+        if (name === null) return
+        const email = this.inputService.promptWithCancel("Informe o e-mail: ");
+        if (email === null) return
+        const password = this.inputService.promptWithCancel("Informe a senha: ");
+        if  (password === null) return
+        
+        enterprise.setName(name);
+        enterprise.setEmail(email);
+        enterprise.setPassword(password);
+
+
         
         // Registrar no banco de dados (controlador se encarrega de gerar o ID)
         this.enterpriseController.registerNewEnterprise(enterprise);
