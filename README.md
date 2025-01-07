@@ -33,7 +33,7 @@ Este projeto tem como objetivo demonstrar e praticar conceitos fundamentais de P
 
 - **TypeScript**: Linguagem principal para tipagem forte e segurança no código.  
 - **Node.js**: Ambiente de execução para rodar o projeto.  
-- **Jest** (ou similar): Framework para testes unitários e validação de funcionalidades.  
+- **Jest** : Framework para testes unitários e validação de funcionalidades.  
 
 ---
 
@@ -43,3 +43,6 @@ Este projeto tem como objetivo demonstrar e praticar conceitos fundamentais de P
    ```bash
    git clone https://github.com/<seu-usuario>/sistema-vagas-dev.git
    cd sistema-vagas-dev
+   npm i
+   tsc
+   node dist/
