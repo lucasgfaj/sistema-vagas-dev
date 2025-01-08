@@ -139,18 +139,30 @@ export default class DeveloperScreen {
     }
   }
 
-  // Buscar vagas e inscrever-se
   private searchVacancies(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     const vacancies = this.vacancyController.listVacancies();
+
+    if (vacancies.length === 0) {
+      console.log("Nenhuma vaga disponível no momento.");
+      return;
+    }
+
     vacancies.forEach((vacancy, index) => {
       console.log(`${index + 1}. ${vacancy.getTitle()} - ${vacancy.getDescription()}`);
     });
 
-    const vacancyChoice = this.prompt("Digite o número da vaga que deseja se inscrever: ").trim();
-    if (vacancyChoice.trim().toLowerCase() === "B") this.dashboardDeveloper(userId);
+    const vacancyChoice = this.inputService.promptWithCancel("Digite o número da vaga que deseja se inscrever: ");
+    if (vacancyChoice === null) return; // Cancelamento
 
-    const selectedVacancy = vacancies[parseInt(vacancyChoice) - 1];
+    const vacancyIndex = parseInt(vacancyChoice, 10) - 1; // Subtraindo 1 para ajustar o índice
+
+    if (isNaN(vacancyIndex) || vacancyIndex < 0 || vacancyIndex >= vacancies.length) {
+      console.log("Escolha inválida. Por favor, tente novamente.");
+      return;
+    }
+
+    const selectedVacancy = vacancies[vacancyIndex];
     if (!selectedVacancy) {
       console.log("Vaga inválida.");
       return;
@@ -158,6 +170,7 @@ export default class DeveloperScreen {
 
     const developerId = userId; // Substitua pelo ID do desenvolvedor atual
     this.vacancyController.registerDeveloperToVacancy(developerId, selectedVacancy.getTitle());
+    console.log(`Você se inscreveu na vaga: ${selectedVacancy.getTitle()}`);
   }
 
   // Listar candidaturas do desenvolvedor
@@ -219,15 +232,13 @@ export default class DeveloperScreen {
         break;
       case "3":
         // Remover Habilidades
-        const skillRemoveIdStr = this.prompt("Digite o ID da Habilidade que será removida: ").trim();
-        const skillRemoveId = parseInt(skillRemoveIdStr, 10); // Garantir que o ID seja um número
+        const maskedIndexStr = this.prompt("Digite o número da habilidade (listagem) que será removida: ").trim();
+        const maskedIndex = parseInt(maskedIndexStr, 10); // Garantir que o valor seja um número
 
-        // Verifica se o ID é válido
-        if (isNaN(skillRemoveId)) {
-          console.log("Por favor, insira um ID válido.");
-          this.skillsDeveloper(userId); // Reexibir o menu
+        if (isNaN(maskedIndex)) {
+          console.log("Por favor, insira um número válido.");
         } else {
-          this.developerController.removeSkills(skillRemoveId)
+          this.developerController.removeSkillByIndex(userId, maskedIndex); // Chama o método de remoção pelo índice sequencial
         }
         this.skillsDeveloper(userId);
         break;

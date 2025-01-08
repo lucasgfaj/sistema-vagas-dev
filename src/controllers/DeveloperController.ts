@@ -59,7 +59,7 @@ export default class DeveloperController {
             const skill = new Skills(name, level);
             skills.push(skill); // Adiciona a habilidade na lista local
 
-            console.log(`Habilidade "${skill.getName()}" com ID ${skill.getId()} registrada.`);
+            console.log(`Habilidade "${skill.getName()}" registrada.`);
 
             const addMore = prompt("Deseja adicionar mais habilidades? (s/n): ").trim().toLowerCase();
             if (addMore !== "s") break;
@@ -75,23 +75,36 @@ export default class DeveloperController {
             const skills = developer.getSkills();
             if (skills.length > 0) {
                 console.log("Habilidades do desenvolvedor:");
-                skills.forEach(skill => {
-                    console.log(`ID: ${skill.getId()}, Nome: ${skill.getName()}, Nível: ${skill.getLevel()}`);
+                skills.forEach((skill, index) => {
+                    console.log(`${index + 1}. Nome: ${skill.getName()}, Nível: ${skill.getLevel()}`);
                 });
             } else {
                 console.log("Nenhuma habilidade registrada.");
             }
+        } else {
+            console.log("Desenvolvedor não encontrado.");
         }
     }
-
-    public removeSkills(skillId: number): void {
-        const index = this.skills.findIndex(skill => skill.getId() === skillId);
-        if (index !== -1) {
-            console.log("Habilidade não encontrada");
+    public removeSkillByIndex(developerId: number, maskedIndex: number): void {
+        const developer = this.getDeveloperById(developerId);
+        if (!developer) {
+            console.log("Desenvolvedor não encontrado.");
             return;
         }
-        this.skills.splice(index, 1)
-        console.log("Habilidade com ID ${skillId} removida com sucesso!");
+    
+        const skills = developer.getSkills();
+        if (maskedIndex < 1 || maskedIndex > skills.length) {
+            console.log("Índice inválido. Por favor, selecione um número válido.");
+            return;
+        }
+    
+        // Converter índice mascarado (1, 2, 3...) para índice real do array (0, 1, 2...)
+        const realIndex = maskedIndex - 1;
+        const removedSkill = skills[realIndex];
+    
+        // Remover habilidade
+        skills.splice(realIndex, 1);
+        console.log(`Habilidade "${removedSkill.getName()}" removida com sucesso.`);
     }
 
     // Método para validar habilidades e registrar o desenvolvedor
