@@ -5,6 +5,7 @@ import Database from "../database/Database";
 import Validator from "../models/Validator";
 import VacancyController from "../controllers/VacancyController";
 import InputService from "../services/input.service";
+import Developer from "../models/Developer";
 
 export default class DeveloperScreen {
   private inputService: InputService;
@@ -24,18 +25,35 @@ export default class DeveloperScreen {
   // Método para registrar um novo desenvolvedor
   public registerDeveloper(): void {
     console.log("-------------------------------------------------------------------------------");
-    console.log("Cadastro de Desenvolvedor : Digte B para Cancelar");
+    console.log("Cadastro de Desenvolvedor : Digite B para Cancelar");
     console.log("-------------------------------------------------------------------------------");
 
-    let developer = this.developerController.getNewDeveloper();
+    let developer: Developer = this.developerController.getNewDeveloper();
 
     // Obter os dados do desenvolvedor
-    const name = this.inputService.promptWithCancel("Informe seu Nome: ");
-    if (name === null) return
-    const email = this.inputService.promptWithCancel("Informe o e-mail: ");
-    if (email === null) return
-    const password = this.inputService.promptWithCancel("Informe a senha: ");
-    if (password === null) return
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex para validar emails
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Senha com pelo menos 8 caracteres, 1 letra e 1 número
+
+    let name = this.inputService.promptWithCancel("Informe seu Nome: ");
+    if (name === null) return;
+
+    let email: string | null;
+    do {
+      email = this.inputService.promptWithCancel("Informe o e-mail: ");
+      if (email === null) return;
+      if (!emailRegex.test(email)) {
+        console.log("Erro: O email inserido é inválido. Tente novamente.");
+      }
+    } while (!emailRegex.test(email));
+
+    let password: string | null;
+    do {
+      password = this.inputService.promptWithCancel("Informe a senha: ");
+      if (password === null) return;
+      if (!passwordRegex.test(password)) {
+        console.log("Erro: A senha deve ter pelo menos 8 caracteres, incluindo uma letra e um número. Tente novamente.");
+      }
+    } while (!passwordRegex.test(password));
 
     developer.setName(name);
     developer.setEmail(email);
@@ -43,19 +61,19 @@ export default class DeveloperScreen {
 
     // Registrar as habilidades
     const skills = this.developerController.registerSkills();
-   
+
     developer.setSkills(skills); // Atribuir as habilidades ao desenvolvedor
-    
-    
+
     try {
       // Validar e registrar o desenvolvedor
       this.developerController.validateAndRegisterDeveloper(developer);
     } catch (error: any) {
-      error(1);
+      console.log("Erro ao registrar o desenvolvedor: ", error.message);
     } finally {
       this.router.navigateToPrimaryScreen();
     }
   }
+
 
 
   public dashboardDeveloper(userId: number): void {
@@ -102,12 +120,15 @@ export default class DeveloperScreen {
     switch (choice) {
       case "1":
         this.searchVacancies(userId);
+        this.vacancyDeveloper(userId);
         break;
       case "2":
         this.listMyCandidatures();
+        this.vacancyDeveloper(userId);
         break;
       case "3":
         this.withdrawApplication(userId);
+        this.vacancyDeveloper(userId);
         break;
       case "4":
         this.dashboardDeveloper(userId); // Voltar para Dashboard
@@ -135,7 +156,7 @@ export default class DeveloperScreen {
       return;
     }
 
-    const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+    const developerId = userId; // Substitua pelo ID do desenvolvedor atual
     this.vacancyController.registerDeveloperToVacancy(developerId, selectedVacancy.getTitle());
   }
 
@@ -189,10 +210,12 @@ export default class DeveloperScreen {
       case "1":
         // Listar Habilidades
         this.developerController.listSkills(userId);
+        this.skillsDeveloper(userId);
         break;
       case "2":
         // Adicionar Habilidades
         this.developerController.registerSkills();
+        this.skillsDeveloper(userId);
         break;
       case "3":
         // Remover Habilidades
@@ -206,6 +229,7 @@ export default class DeveloperScreen {
         } else {
           this.developerController.removeSkills(skillRemoveId)
         }
+        this.skillsDeveloper(userId);
         break;
       case "4":
         this.dashboardDeveloper(userId);

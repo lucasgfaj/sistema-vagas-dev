@@ -1,14 +1,17 @@
 import promptSync from "prompt-sync";
 import Router from "../Router";
 import Database from "../database/Database";
+import InputService from "../services/input.service";
 
 export default class UserScreen {
+    private inputService: InputService;
     private prompt = promptSync();
     private router: Router;
     private db = Database.getInstance();
 
     constructor(router: Router) {
         this.router = router;
+        this.inputService = new InputService();
     }
 
     // Método para registrar um novo usuário
@@ -52,14 +55,14 @@ export default class UserScreen {
       // Método de login
       public loginUser(): void {
         console.log("---- Login ----");
-        console.log("Digite '4' a qualquer momento para voltar ao menu principal.");
+        console.log("Digite 'B' a qualquer momento para voltar ao menu principal.");
     
-        const email = this.prompt("Digite o e-mail: ");
-        if (email.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
+        const email = this.inputService.promptWithCancel("Digite o e-mail: ");
+        if (email === null) return;
     
-        const password = this.prompt("Digite a senha: ");
-        if (password.trim().toLowerCase() === "4") this.router.navigateToPrimaryScreen();
-    
+        const password = this.inputService.promptWithCancel("Digite a senha: ");
+        if (password === null) return;
+
         const userDatabase = this.db.findUserByEmail(email);
     
         if (userDatabase && userDatabase.getPassword() === password) {
