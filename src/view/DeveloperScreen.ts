@@ -123,7 +123,7 @@ export default class DeveloperScreen {
         this.vacancyDeveloper(userId);
         break;
       case "2":
-        this.listMyCandidatures();
+        this.listMyCandidatures(userId);
         this.vacancyDeveloper(userId);
         break;
       case "3":
@@ -149,7 +149,7 @@ export default class DeveloperScreen {
     }
 
     vacancies.forEach((vacancy, index) => {
-      console.log(`${index + 1}. ${vacancy.getTitle()} - ${vacancy.getDescription()}`);
+      console.log(`${index + 1}. ${vacancy.getTitle()} - ${vacancy.getDescription()} - ${vacancy.getLanguage()}, ${vacancy.getRequirements()}`);
     });
 
     const vacancyChoice = this.inputService.promptWithCancel("Digite o número da vaga que deseja se inscrever: ");
@@ -168,18 +168,29 @@ export default class DeveloperScreen {
       return;
     }
 
+    // Obter o nome do desenvolvedor
+    const developer = this.db.getUsers().find(u => u.getID() === userId);
+    if (!developer) {
+      console.log("Desenvolvedor não encontrado.");
+      return;
+    }
+
+    const developerName = developer.getName();
     const developerId = userId; // Substitua pelo ID do desenvolvedor atual
-    this.vacancyController.registerDeveloperToVacancy(developerId, selectedVacancy.getTitle());
-    console.log(`Você se inscreveu na vaga: ${selectedVacancy.getTitle()}`);
-  }
+
+    // Passar o nome do desenvolvedor para a função de registro
+    this.vacancyController.registerDeveloperToVacancy(developerId, selectedVacancy.getTitle(), developerName);
+    console.log(`Você se inscreveu na vaga: ${selectedVacancy.getTitle()} como ${developerName}`);
+}
+
 
   // Listar candidaturas do desenvolvedor
-  private listMyCandidatures(): void {
+  private listMyCandidatures(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
-    const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+    const developerId = userId; // Substitua pelo ID do desenvolvedor atual
     this.db.getVacancies().forEach(vacancy => {
       if (vacancy.getCandidates().includes(developerId)) {
-        console.log(`- ${vacancy.getTitle()}`);
+        console.log(`ID: ${vacancy.getId()} - ${vacancy.getTitle()} - ${vacancy.getLanguage()}`);
       }
     });
     console.log("-------------------------------------------------------------------------------");
@@ -188,7 +199,7 @@ export default class DeveloperScreen {
   // Desistir de uma candidatura
   private withdrawApplication(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
-    const developerId = 1; // Substitua pelo ID do desenvolvedor atual
+    const developerId = userId;
     const vacancies = this.db.getVacancies().filter(vacancy => vacancy.getCandidates().includes(developerId));
 
     vacancies.forEach((vacancy, index) => {
@@ -209,7 +220,7 @@ export default class DeveloperScreen {
 
   public skillsDeveloper(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
-    console.log(`Opções de Habilidades - Developer (Inserir Nome):`);
+    console.log(`Opções de Habilidades - Developer`);
     console.log("");
     console.log("1 - Listar Habilidades");
     console.log("2 - Adicionar");

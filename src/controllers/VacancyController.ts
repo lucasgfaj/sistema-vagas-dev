@@ -16,13 +16,17 @@ export default class VacancyController {
   public createVacancy(enterpriseId: number, title: string, description: string, requirements: string[], language: string): void {
     const vacancy = new Vacancy(enterpriseId, title, description, requirements, language);
     this.db.addVacancy(vacancy); // ID gerado automaticamente dentro do método addVacancy
-}
+  }
 
 
   //Listar vagas de uma empresa especifica 
   public listVacanciesByEnterprise(enterpriseId: number): Vacancy[] {
-    return this.db.getVacanciesByEnterpriseId(enterpriseId);
-}
+    const allVacancies = this.db.getVacancies();
+
+    const enterpriseVacancies = allVacancies.filter(vacancy => vacancy.getEnterpriseId() === enterpriseId);
+    
+    return enterpriseVacancies;  // Retorna todas as vagas da empresa
+  }
 
   // Listar todas as vagas
   public listVacancies(): Vacancy[] {
@@ -32,35 +36,63 @@ export default class VacancyController {
   // Deletar uma vaga
   public deleteVacancyById(enterpriseId: number, vacancyId: number): void {
     const vacancies = this.db.getVacancies();
-    
+
     // Encontra a vaga pelo ID
     const vacancy = vacancies.find(v => v.getId() === vacancyId);
-    
+
     if (!vacancy) {
-        throw new Error("Vaga não encontrada.");
+      throw new Error("Vaga não encontrada.");
     }
 
     // Verifica se a vaga pertence à empresa que está tentando excluí-la
     if (vacancy.getEnterpriseId() !== enterpriseId) {
-        throw new Error("Você não tem permissão para excluir essa vaga.");
+      throw new Error("Você não tem permissão para excluir essa vaga.");
     }
 
     // Se a vaga for encontrada e pertence à empresa, remove a vaga
     const index = vacancies.indexOf(vacancy);
     this.db.removeVacancy(index);
-}
+  }
 
-  // Obter candidatos de uma vaga
-   public getCandidatesForVacancy(title: string): number[] {  // Alterado para number[]
+  // Obter candidatos de uma vaga (com ID e nome)
+  public getCandidatesForVacancy(title: string): { id: number, name: string }[] {
     const vacancy = this.db.getVacancies().find(v => v.getTitle() === title);
     if (!vacancy) {
       throw new Error("Vaga não encontrada.");
     }
-    return vacancy.getCandidates();  // Retorna um array de números (IDs)
+
+    const candidatesIds = vacancy.getCandidates(); // IDs dos candidatos
+    const candidates = candidatesIds.map((candidateId) => {
+      const developer = this.db.getUsers().find(u => u.getID() === candidateId);
+      if (developer && developer.getTypeUser() === 'desenvolvedor') {
+        return { id: developer.getID(), name: developer.getName() }; // Retorna um objeto com ID e nome
+      }
+      return null; // Caso o desenvolvedor não seja encontrado ou não seja um desenvolvedor
+    }).filter(candidate => candidate !== null); // Remove qualquer valor nulo
+
+    return candidates;
   }
 
-   // Inscrever um desenvolvedor em uma vaga
-   public registerDeveloperToVacancy(developerId: number, vacancyTitle: string): void {
+  public assignCandidateToVacancy(candidateId: number, title: string): void {
+    const vacancy = this.db.getVacancies().find(v => v.getTitle() === title);
+    if (!vacancy) {
+        console.log("Vaga não encontrada.");
+        return;
+    }
+
+    const candidate = this.db.getUsers().find(u => u.getID() === candidateId);
+    if (!candidate || candidate.getTypeUser() !== 'desenvolvedor') {
+        console.log("Candidato não encontrado ou tipo de usuário inválido.");
+        return;
+    }
+
+    // Aqui você pode realizar a ação necessária, como associar o candidato à vaga
+    vacancy.addCandidate(candidateId); // Se a função addCandidate não existir, você pode adaptá-la
+    console.log(`${candidate.getName()} foi selecionado para a vaga "${title}".`);
+}
+
+  // Inscrever um desenvolvedor em uma vaga
+  public registerDeveloperToVacancy(developerId: number, vacancyTitle: string, developerName: string): void {
     const vacancy = this.db.getVacancies().find(v => v.getTitle() === vacancyTitle);
     if (!vacancy) {
       throw new Error("Vaga não encontrada.");
@@ -68,11 +100,11 @@ export default class VacancyController {
 
     const developer = this.db.getUsers().find(u => u.getID() === developerId);
     if (!developer || developer.getTypeUser() !== 'desenvolvedor') {
-      throw new Error("Desenvolvedor não encontrado.");
+      throw new Error("Desenvolvedor não encontrado ou tipo de usuário inválido.");
     }
 
     vacancy.addCandidate(developerId); // Adiciona o desenvolvedor à vaga
-    console.log(`${developer.getName()} se inscreveu na vaga: ${vacancyTitle}`);
+    console.log(`${developerName} se inscreveu na vaga: ${vacancyTitle}`);
   }
 
   // Remover um desenvolvedor de uma vaga

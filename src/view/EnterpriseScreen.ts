@@ -76,7 +76,7 @@ export default class EnterpriseScreen {
 
     public dashboardEnterprise(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
-        console.log(`Bem-vindo(a), (Inserir Nome)`);
+        console.log(`Bem-vindo(a), Empresa`);
         console.log("");
         console.log("1 - Gerenciar Vagas");
         console.log("2 - Sair");
@@ -219,14 +219,13 @@ export default class EnterpriseScreen {
         this.vacancyEnterprise(userId);
     }
 
-
     private listCandidates(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
         console.log("Ver Candidatos de uma Vaga");
         console.log("-------------------------------------------------------------------------------");
-
+    
         const title = this.prompt("Informe o título da vaga: ").trim();
-
+    
         try {
             const candidates = this.vacancyController.getCandidatesForVacancy(title);
             if (candidates.length === 0) {
@@ -234,15 +233,36 @@ export default class EnterpriseScreen {
             } else {
                 console.log(`Candidatos para a vaga "${title}":`);
                 candidates.forEach((candidate, index) => {
-                    console.log(`${index + 1}. ${candidate}`);
+                    console.log(`${index + 1}. ${candidate.name} (ID: ${candidate.id})`);
                 });
+    
+                // Pergunta para o usuário qual candidato ele quer selecionar
+                const choice = this.prompt("Escolha o número do candidato para selecionar ou digite '0' para cancelar: ").trim();
+                const candidateIndex = parseInt(choice, 10) - 1; // Subtrai 1 para ajustar o índice
+    
+                if (isNaN(candidateIndex) || candidateIndex < 0 || candidateIndex >= candidates.length) {
+                    if (choice !== '0') {
+                        console.log("Escolha inválida. Operação cancelada.");
+                    }
+                } else {
+                    const selectedCandidate = candidates[candidateIndex];
+                    console.log(`Você selecionou o candidato: ${selectedCandidate.name}`);
+    
+                    // Aqui você pode fazer o que for necessário com o candidato selecionado
+                    // Exemplo: associar esse candidato à vaga
+                    this.vacancyController.assignCandidateToVacancy(selectedCandidate.id, title);
+    
+                    console.log(`Candidato ${selectedCandidate.name} foi associado à vaga "${title}".`);
+                }
             }
         } catch (error) {
             console.log("Ocorreu um erro ao listar candidatos.");
         }
-
+    
         this.vacancyEnterprise(userId);
     }
+    
+    
 
     public deleteVacancy(userId: number): void {
         console.log("-------------------------------------------------------------------------------");
