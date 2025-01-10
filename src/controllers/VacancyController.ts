@@ -54,24 +54,25 @@ export default class VacancyController {
     this.db.removeVacancy(index);
   }
 
-  // Obter candidatos de uma vaga (com ID e nome)
-  public getCandidatesForVacancy(title: string): { id: number, name: string }[] {
-    const vacancy = this.db.getVacancies().find(v => v.getTitle() === title);
-    if (!vacancy) {
-      throw new Error("Vaga não encontrada.");
-    }
-
-    const candidatesIds = vacancy.getCandidates(); // IDs dos candidatos
-    const candidates = candidatesIds.map((candidateId) => {
-      const developer = this.db.getUsers().find(u => u.getID() === candidateId);
-      if (developer && developer.getTypeUser() === 'desenvolvedor') {
-        return { id: developer.getID(), name: developer.getName() }; // Retorna um objeto com ID e nome
-      }
-      return null; // Caso o desenvolvedor não seja encontrado ou não seja um desenvolvedor
-    }).filter(candidate => candidate !== null); // Remove qualquer valor nulo
-
-    return candidates;
+// Obter candidatos de uma vaga (com ID e nome)
+public getCandidatesForVacancy(title: string): { id: number, name: string }[] {
+  const vacancy = this.db.getVacancies().find(v => v.getTitle() === title);
+  if (!vacancy) {
+    throw new Error("Vaga não encontrada.");
   }
+
+  const candidatesIds = vacancy.getCandidates(); // IDs dos candidatos
+  const candidates = candidatesIds.map((candidateId) => {
+    const developer = this.db.getUsers().find(u => u.getID() === candidateId);
+    if (developer && developer.getTypeUser() === 'desenvolvedor') {
+      return { id: developer.getID(), name: developer.getName() }; // Retorna um objeto com ID e nome
+    }
+    return null; // Caso o desenvolvedor não seja encontrado ou não seja um desenvolvedor
+  }).filter((candidate): candidate is { id: number; name: string } => candidate !== null); // Removendo os valores nulos e afirmando o tipo
+
+  return candidates;
+}
+
 
   public assignCandidateToVacancy(candidateId: number, title: string): void {
     const vacancy = this.db.getVacancies().find(v => v.getTitle() === title);
