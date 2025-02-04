@@ -51,26 +51,15 @@ export default class ReportsScreen {
                 console.log(`Relatório de empresas gerado na pasta: ${reportsDir}`);
                 break;
             case "5":
-                // Perguntar o ID do usuário
-                const userId = parseInt(this.prompt("Digite o ID do usuário para o qual você deseja gerar o relatório: "), 10);
+                const id = parseInt(this.prompt("Digite o ID para o qual deseja gerar o relatório: "), 10);
+                const typeInput = this.prompt("Digite o tipo de relatório (desenvolvedor/empresa/vaga): ").toLowerCase();
 
-                // Perguntar o tipo de usuário
-                const userTypeInput = this.prompt("Digite o tipo de usuário (desenvolvedor/empresa): ").toLowerCase();
-                let userType: TypeUser;
-
-                // Validar tipo de usuário
-                if (userTypeInput === 'desenvolvedor') {
-                    userType = TypeUser.desenvolvedor;  // Aqui, você mapeia para o TypeUser
-                } else if (userTypeInput === 'empresa') {
-                    userType = TypeUser.empresa;
-                } else {
-                    console.log("Tipo de usuário inválido. Informe 'desenvolvedor' ou 'empresa'.");
+                if (!["desenvolvedor", "empresa", "vaga"].includes(typeInput)) {
+                    console.log("Tipo inválido. Escolha entre 'desenvolvedor', 'empresa' ou 'vaga'.");
                     return;
                 }
 
-                // Gerar o relatório chamando o controlador
-                this.reportsController.generateSpecificUserReport(userId, userType);
-                console.log(`Relatório de usuário com ID ${userId} gerado na pasta: ${reportsDir}`);
+                this.reportsController.generateSpecificReport(id, typeInput as "desenvolvedor" | "empresa" | "vaga");
                 break;
 
             case "6":

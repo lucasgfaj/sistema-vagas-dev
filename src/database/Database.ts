@@ -30,13 +30,11 @@ export default class Database {
         return this.users;
     }
 
-    public getUserById<T>(id: number, userType: TypeUser, userClass: new (...args: any[]) => T): T | undefined {
-        const user = this.findUserById(id);
-        if (user && user.getTypeUser() === userType && user instanceof userClass) {
-            return user as T;
-        }
-        return undefined;
+    public getAny<T>(collection: T[], id: number, key: keyof T): T | undefined {
+        return collection.find(item => item[key] === id);
     }
+    
+    
 
     // Buscar usuário por email
     public findUserByEmail(email: string): User | undefined {

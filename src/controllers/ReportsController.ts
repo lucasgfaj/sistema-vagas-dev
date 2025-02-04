@@ -6,6 +6,7 @@ import { TypeUser } from '../enums/TypeUser';
 import User from '../models/User';
 import Developer from '../models/Developer';
 import Enterprise from '../models/Enterprise';
+import Vacancy from '../models/Vacancy';
 export default class ReportsController {
     private reportsDir = path.resolve(__dirname, "../../Reports");
     private db = Database.getInstance();
@@ -124,24 +125,54 @@ export default class ReportsController {
         console.log(`Relatório de Empresas gerado e salvo em: ${outputPath}`);
     }
 
-    public generateSpecificUserReport(id: number, userType: TypeUser): void {
-        const user = this.db.getUserById(id, userType, User.prototype.constructor as new (...args: any[]) => User);
-        if (user) {
-            const outputPath = path.join(this.reportsDir, `UserReport_${id}.pdf`);
-            const doc = new jsPDF();
-            doc.setFontSize(18);
-            doc.text(`Relatório de Usuário: ${user.getName()}`, 20, 20);
-            doc.setFontSize(12);
-            doc.text(`Email: ${user.getEmail()}`, 20, 30);
-            doc.text(`Tipo: ${user.getTypeUser()}`, 20, 40);
-            doc.text(`Criado em: ${user.getCreatedAt().toLocaleString()}`, 20, 50);
-    
-            const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
-            fs.writeFileSync(outputPath, pdfBuffer);
-    
-            console.log(`Relatório de Usuário com ID ${id} gerado e salvo em: ${outputPath}`);
+   public generateSpecificReport(id: number, entityType: "desenvolvedor" | "empresa" | "vaga"): void {
+        let entity: User | Vacancy | undefined;
+        let reportName: string;
+
+        if (entityType === "desenvolvedor" || entityType === "empresa") {
+            entity = this.db.getAny<User>(this.db.getUsers(), id, "id");
+            reportName = "UserReport";
+        } else if (entityType === "vaga") {
+            entity = this.db.getAny<Vacancy>(this.db.getVacancies(), id, "id");
+            reportName = "VacancyReport";
         } else {
-            console.log(`Usuário com ID ${id} não encontrado ou tipo não corresponde.`);
+            console.log("Tipo inválido. Use 'desenvolvedor', 'empresa' ou 'vaga'.");
+            return;
         }
-    }
+
+        if (!entity) {
+            console.log(`Nenhuma ${entityType} encontrada com ID ${id}.`);
+            return;
+        }
+
+        // Criando o relatório PDF
+        const outputPath = path.join(this.reportsDir, `${reportName}_${id}.pdf`);
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text(`Relatório de ${entityType}`, 20, 20);
+        doc.setFontSize(12);
+
+        doc.text(`ID: ${id}`, 20, 30);
+
+        // Adicionar informações específicas com mais segurança
+        if (entity instanceof User) {
+            doc.text(`Nome: ${entity.getName()}`, 20, 40);
+            doc.text(`Email: ${entity.getEmail()}`, 20, 50);
+            doc.text(`Tipo: ${entity.getTypeUser()}`, 20, 60);
+            doc.text(`Criado em: ${entity.getCreatedAt().toLocaleString()}`, 20, 70);
+        } else if (entity instanceof Vacancy) {
+            doc.text(`Título: ${entity.getTitle()}`, 20, 40);
+            doc.text(`Descrição: ${entity.getDescription()}`, 20, 50);
+            doc.text(`Linguagem: ${entity.getLanguage()}`, 20, 60);
+            doc.text(`Empresa ID: ${entity.getEnterpriseId()}`, 20, 70);
+            doc.text(`Candidatos: ${entity.getCandidates().length}`, 20, 80);
+        }
+
+        // Salvar o relatório em PDF
+        const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
+        fs.writeFileSync(outputPath, pdfBuffer);
+
+        console.log(`Relatório de ${entityType} gerado e salvo em: ${outputPath}`);
+    }    
 }

@@ -1,5 +1,5 @@
 export default class Vacancy {
-    private id!: number; // ID único da vaga
+    public id!: number; // ID único da vaga
     private candidates: number[] = []; // Alterando para number[] para armazenar IDs de desenvolvedores
 
     constructor(
