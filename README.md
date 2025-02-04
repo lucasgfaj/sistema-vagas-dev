@@ -41,7 +41,7 @@ Este projeto tem como objetivo demonstrar e praticar conceitos fundamentais de P
 
 1. Clone o repositório:  
    ```bash
-   git clone https://github.com/<seu-usuario>/sistema-vagas-dev.git
+   git clone https://github.com/lucasgfaj/sistema-vagas-dev.git
    cd sistema-vagas-dev
    npm i
    tsc
