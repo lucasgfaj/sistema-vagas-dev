@@ -2,8 +2,7 @@ import { jsPDF } from 'jspdf';
 import fs from 'fs';
 import path from 'path';
 import Database from "../database/Database";
-import User from "../models/User";
-import Vacancy from "../models/Vacancy";
+
 
 export default class ReportsController {
     private reportsDir = path.resolve(__dirname, "../../Reports");
@@ -14,29 +13,40 @@ export default class ReportsController {
             fs.mkdirSync(this.reportsDir, { recursive: true });
         }
     }
-
-    // Relatório de todos os usuários
     public generateAllUsersReport(): void {
         const outputPath = path.join(this.reportsDir, "AllUsersReport.pdf");
-        const users = this.db.getUsers();  // Buscando todos os usuários do banco
-        
+        const users = this.db.getUsers();  
         const doc = new jsPDF();
         
         doc.setFontSize(18);
         doc.text('Relatório de Todos os Usuários', 20, 20);
         doc.setFontSize(12);
         
+        let verticalPosition = 30;
+        const lineSpacing = 10;
+        
         users.forEach((user, index) => {
-            doc.text(`${index + 1}. Nome: ${user.getName()}`, 20, 30 + index * 10);
-            doc.text(`   Email: ${user.getEmail()}`, 20, 35 + index * 10);
-            doc.text(`   Tipo: ${user.getTypeUser()}`, 20, 40 + index * 10);
-            doc.text(`   Criado em: ${user.getCreatedAt().toLocaleString()}`, 20, 45 + index * 10);
+            if (verticalPosition + lineSpacing * 4 > doc.internal.pageSize.height) {
+                doc.addPage();
+                verticalPosition = 20; 
+            }
+    
+            doc.text(`${index + 1}. Nome: ${user.getName()}`, 20, verticalPosition);
+            verticalPosition += lineSpacing;
+    
+            doc.text(`   Email: ${user.getEmail()}`, 20, verticalPosition);
+            verticalPosition += lineSpacing;
+    
+            doc.text(`   Tipo: ${user.getTypeUser()}`, 20, verticalPosition);
+            verticalPosition += lineSpacing;
+    
+            doc.text(`   Criado em: ${user.getCreatedAt().toLocaleString()}`, 20, verticalPosition);
+            verticalPosition += lineSpacing * 2; // Espaço extra entre os usuários
         });
-
-        // Aqui fazemos a conversão do ArrayBuffer para Buffer
+    
         const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
         fs.writeFileSync(outputPath, pdfBuffer); // Salvando como PDF
-
+    
         console.log(`Relatório de Todos os Usuários gerado e salvo em: ${outputPath}`);
     }
 
