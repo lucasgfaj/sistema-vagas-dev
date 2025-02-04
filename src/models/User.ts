@@ -1,10 +1,12 @@
+
+import { TypeUser } from '../enums/TypeUser';
 export default abstract class User {
 
     public id!: number;
     public name!: string;
     public email!: string;
     public password!: string;
-    public typeUser!: "desenvolvedor" | "empresa";
+    public typeUser!: TypeUser;
     public createdAt!: Date;
 
     public constructor() {
@@ -42,11 +44,11 @@ export default abstract class User {
         this.password = password;
     }
 
-    public getTypeUser(): "desenvolvedor" | "empresa" {
+    public getTypeUser(): TypeUser {
         return this.typeUser;
     }
 
-    public setTypeUser(typeUser: "desenvolvedor" | "empresa"): void {
+    public setTypeUser(typeUser: TypeUser): void {
         this.typeUser = typeUser;
     }
 

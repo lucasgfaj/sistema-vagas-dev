@@ -1,5 +1,6 @@
 import Enterprise from "../models/Enterprise";
 import Database from "../database/Database";
+import { TypeUser } from "../enums/TypeUser";
 
 export default class EnterpriseController {
 
@@ -12,7 +13,7 @@ export default class EnterpriseController {
     // Método para criar uma nova instância de Enterprise
     public getNewEnterprise(): Enterprise {
         let enterprise = new Enterprise();
-        enterprise.setTypeUser("empresa");
+        enterprise.setTypeUser(TypeUser.desenvolvedor);
         return enterprise;
     }
 

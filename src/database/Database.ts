@@ -1,4 +1,5 @@
 import User from "../models/User";
+import { TypeUser } from "../enums/TypeUser";
 import Vacancy from "../models/Vacancy";
 import Developer from "../models/Developer";
 import Enterprise from "../models/Enterprise"; // Importe a classe Enterprise
@@ -27,6 +28,14 @@ export default class Database {
     // Buscar todos os usuários
     public getUsers(): User[] {
         return this.users;
+    }
+
+    public getUserById<T>(id: number, userType: TypeUser, userClass: new (...args: any[]) => T): T | undefined {
+        const user = this.findUserById(id);
+        if (user && user.getTypeUser() === userType && user instanceof userClass) {
+            return user as T;
+        }
+        return undefined;
     }
 
     // Buscar usuário por email

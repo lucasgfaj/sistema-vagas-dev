@@ -2,8 +2,10 @@ import { jsPDF } from 'jspdf';
 import fs from 'fs';
 import path from 'path';
 import Database from "../database/Database";
-
-
+import { TypeUser } from '../enums/TypeUser';
+import User from '../models/User';
+import Developer from '../models/Developer';
+import Enterprise from '../models/Enterprise';
 export default class ReportsController {
     private reportsDir = path.resolve(__dirname, "../../Reports");
     private db = Database.getInstance();
@@ -120,5 +122,26 @@ export default class ReportsController {
         fs.writeFileSync(outputPath, pdfBuffer); // Salvando como PDF
 
         console.log(`Relatório de Empresas gerado e salvo em: ${outputPath}`);
+    }
+
+    public generateSpecificUserReport(id: number, userType: TypeUser): void {
+        const user = this.db.getUserById(id, userType, User.prototype.constructor as new (...args: any[]) => User);
+        if (user) {
+            const outputPath = path.join(this.reportsDir, `UserReport_${id}.pdf`);
+            const doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text(`Relatório de Usuário: ${user.getName()}`, 20, 20);
+            doc.setFontSize(12);
+            doc.text(`Email: ${user.getEmail()}`, 20, 30);
+            doc.text(`Tipo: ${user.getTypeUser()}`, 20, 40);
+            doc.text(`Criado em: ${user.getCreatedAt().toLocaleString()}`, 20, 50);
+    
+            const pdfBuffer = Buffer.from(doc.output('arraybuffer'));
+            fs.writeFileSync(outputPath, pdfBuffer);
+    
+            console.log(`Relatório de Usuário com ID ${id} gerado e salvo em: ${outputPath}`);
+        } else {
+            console.log(`Usuário com ID ${id} não encontrado ou tipo não corresponde.`);
+        }
     }
 }

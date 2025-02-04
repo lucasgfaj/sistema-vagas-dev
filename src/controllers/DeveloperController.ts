@@ -4,7 +4,7 @@ import Developer from "../models/Developer";
 import Validator from "../models/Validator";
 import ProviderErrors from "../models/ProviderError";
 import Vacancy from "../models/Vacancy";
-
+import { TypeUser } from "../enums/TypeUser";
 export default class DeveloperController {
     private skills: Skills[] = [];
     private db: Database;
@@ -19,7 +19,7 @@ export default class DeveloperController {
     // Método para criar uma nova instância de Developer
     public getNewDeveloper(): Developer {
         let developer = new Developer();
-        developer.setTypeUser("desenvolvedor");
+        developer.setTypeUser(TypeUser.desenvolvedor);
         return developer;
     }
 

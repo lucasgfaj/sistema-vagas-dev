@@ -216,8 +216,7 @@ export default class DeveloperScreen {
 
     this.vacancyController.removeDeveloperFromVacancy(developerId, selectedVacancy.getTitle());
   }
-
-
+  
   public skillsDeveloper(userId: number): void {
     console.log("-------------------------------------------------------------------------------");
     console.log(`Opções de Habilidades - Developer`);

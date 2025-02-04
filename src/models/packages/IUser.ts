@@ -1,7 +1,8 @@
+import { TypeUser } from "../../enums/TypeUser";
 export default interface IUser {
     getID(): number;
     getName(): string;
     getEmail(): string;
-    getTypeUser(): "desenvolvedor" | "empresa";
+    getTypeUser(): TypeUser;
     getCreatedAt(): Date;
 }   
