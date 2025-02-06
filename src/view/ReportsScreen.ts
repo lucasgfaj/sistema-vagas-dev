@@ -50,18 +50,25 @@ export default class ReportsScreen {
                 this.reportsController.generateEnterprisesReport();
                 console.log(`Relatório de empresas gerado na pasta: ${reportsDir}`);
                 break;
-            case "5":
-                const id = parseInt(this.prompt("Digite o ID para o qual deseja gerar o relatório: "), 10);
-                const typeInput = this.prompt("Digite o tipo de relatório (desenvolvedor/empresa/vaga): ").toLowerCase();
-
-                if (!["desenvolvedor", "empresa", "vaga"].includes(typeInput)) {
-                    console.log("Tipo inválido. Escolha entre 'desenvolvedor', 'empresa' ou 'vaga'.");
-                    return;
-                }
-
-                this.reportsController.generateSpecificReport(id, typeInput as "desenvolvedor" | "empresa" | "vaga");
-                break;
-
+                case "5":
+                    const idInput = this.prompt("Digite o ID para o qual deseja gerar o relatório: ").trim();
+                    const id = parseInt(idInput, 10);
+                
+                    if (isNaN(id) || id <= 0) {
+                        console.log("ID inválido. Por favor, digite um número válido.");
+                        return;
+                    }
+                
+                    const typeInput = this.prompt("Digite o tipo de relatório (desenvolvedor/empresa/vaga): ").trim().toLowerCase();
+                
+                    const validTypes: ("desenvolvedor" | "empresa" | "vaga")[] = ["desenvolvedor", "empresa", "vaga"];
+                    if (!validTypes.includes(typeInput as any)) {
+                        console.log("Tipo inválido. Escolha entre 'desenvolvedor', 'empresa' ou 'vaga'.");
+                        return;
+                    }
+                
+                    this.reportsController.generateSpecificReport(id, typeInput as "desenvolvedor" | "empresa" | "vaga");
+                    break;
             case "6":
                 console.log("Saindo...");
                 this.router.navigateToPrimaryScreen();

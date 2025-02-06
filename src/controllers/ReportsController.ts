@@ -124,38 +124,35 @@ export default class ReportsController {
 
         console.log(`Relatório de Empresas gerado e salvo em: ${outputPath}`);
     }
-
-   public generateSpecificReport(id: number, entityType: "desenvolvedor" | "empresa" | "vaga"): void {
+    public generateSpecificReport(id: number, entityType: "desenvolvedor" | "empresa" | "vaga"): void {
         let entity: User | Vacancy | undefined;
         let reportName: string;
-
+    
         if (entityType === "desenvolvedor" || entityType === "empresa") {
-            entity = this.db.getAny<User>(this.db.getUsers(), id, "id");
+            entity = this.db.getAny<User>(id); 
             reportName = "UserReport";
         } else if (entityType === "vaga") {
-            entity = this.db.getAny<Vacancy>(this.db.getVacancies(), id, "id");
+            entity = this.db.getAny<Vacancy>(id);
             reportName = "VacancyReport";
         } else {
             console.log("Tipo inválido. Use 'desenvolvedor', 'empresa' ou 'vaga'.");
             return;
         }
-
+    
         if (!entity) {
             console.log(`Nenhuma ${entityType} encontrada com ID ${id}.`);
             return;
         }
-
+    
         // Criando o relatório PDF
         const outputPath = path.join(this.reportsDir, `${reportName}_${id}.pdf`);
         const doc = new jsPDF();
-
+    
         doc.setFontSize(18);
         doc.text(`Relatório de ${entityType}`, 20, 20);
         doc.setFontSize(12);
-
         doc.text(`ID: ${id}`, 20, 30);
-
-        // Adicionar informações específicas com mais segurança
+    
         if (entity instanceof User) {
             doc.text(`Nome: ${entity.getName()}`, 20, 40);
             doc.text(`Email: ${entity.getEmail()}`, 20, 50);
@@ -168,11 +165,12 @@ export default class ReportsController {
             doc.text(`Empresa ID: ${entity.getEnterpriseId()}`, 20, 70);
             doc.text(`Candidatos: ${entity.getCandidates().length}`, 20, 80);
         }
-
+    
         // Salvar o relatório em PDF
         const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
         fs.writeFileSync(outputPath, pdfBuffer);
-
+    
         console.log(`Relatório de ${entityType} gerado e salvo em: ${outputPath}`);
-    }    
+    }
+    
 }

@@ -30,10 +30,21 @@ export default class Database {
         return this.users;
     }
 
-    public getAny<T>(collection: T[], id: number, key: keyof T): T | undefined {
-        return collection.find(item => item[key] === id);
+    public getAny<T>(id: number): T | undefined {
+        if (this.users instanceof Array) {
+            const user = this.users.find((user) => user.getID() === id);
+            if (user) {
+                return user as T;
+            }
+        }
+        if (this.vacancies instanceof Array) {
+            const vacancy = this.vacancies.find((vacancy) => vacancy.getId() === id);
+            if (vacancy) {
+                return vacancy as T;
+            }
+        }
+        return undefined;
     }
-    
     
 
     // Buscar usuário por email
